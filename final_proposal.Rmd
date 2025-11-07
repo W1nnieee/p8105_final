@@ -18,21 +18,10 @@ Motor vehicle collisions are a leading cause of injury and death in urban enviro
 
 We plan to focus on the following questions; these may evolve as our analysis progresses:
 
-1. **Temporal trends**  
-   - How have the number and severity of crashes changed over time (2012–2024)?  
-   - Are there clear **seasonal patterns** or **daily/weekly cycles** in crash frequency?
-
-2. **Spatial variation**  
-   - Which boroughs and neighborhoods experience the highest collision rates and most severe crashes?  
-   - Can we identify “hot spots” of collisions using spatial visualization?
-
-3. **Contributing factors**  
-   - What are the most common **contributing factors** (e.g., driver inattention, unsafe speed, alcohol involvement)?  
-   - How do these factors differ by borough, time of day, or vehicle type (e.g., private cars vs taxis vs bicycles)?
-
-4. **Policy evaluation (Vision Zero)**  
-   - Did the launch of NYC’s *Vision Zero* initiative in 2014 coincide with noticeable changes in crash counts and fatalities?  
-   - Are trends in serious injury and fatal crashes different before and after 2014?
+1. **Temporal trends** – How have crash counts and severity changed over time（2012-2014）？ Are there daily or seasonal patterns? 
+2. **Spatial variation** – Which boroughs and neighborhoods have the highest crash rates? Where are “hot spots”?  
+3. **Contributing factors** – What are the most common causes (e.g., inattention, speeding, alcohol)? How do they differ by time or vehicle type?  (e.g., private cars vs taxis vs bicycles)
+4. **Policy evaluation (Vision Zero)** - Did the launch of NYC’s *Vision Zero* initiative in 2014 coincide with noticeable changes in crash counts and fatalities?  - Are trends in serious injury and fatal crashes different before and after 2014?
 
 ## Data
 
