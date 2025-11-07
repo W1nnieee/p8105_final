@@ -78,14 +78,7 @@ Involvement, Other).
     - Map crash locations with spatial data.  
     - Aggregate to neighborhood or ZIP code for **crash density**
       visualizations.
-3.  **Policy / temporal comparison**
-    - Compare crashes **before vs after 2014** (Vision Zero start)
-      using:
-      - Summary statistics  
-      - Time-series plots with vertical reference lines  
-      - Simple regression / interrupted time series–style comparisons
-        (if appropriate).  
-4.  **Modeling (injury / fatality risk)**
+3.  **Modeling (injury / fatality risk)**
     - Build exploratory logistic regression models for:
       - probability of any injury, and/or  
       - probability of any fatality  
@@ -93,7 +86,7 @@ Involvement, Other).
       categories, and vehicle type.  
     - Assess variable importance and model fit; interpret coefficients
       in a public-health context.
-5.  **Visualization and communication**
+4.  **Visualization and communication**
     - Well-labeled, publication-quality figures created using
       `ggplot2`.  
     - Potential interactive elements (e.g., interactive maps or hover
