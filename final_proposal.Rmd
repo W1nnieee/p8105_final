@@ -1,29 +1,18 @@
 ---
 title: "Crashes and Causes: A Data-Driven Analysis of Motor Vehicle Collisions in New York City (2012–2024)"
-author: |
-  Team XX:
-  Daniel Jiao (UNI: dj2764),
-  Xinyu Wang(UNI: xwang3106),
-  Yuyang Wang (UNI: yw4660),
-  Haoyi Tan (UNI: ht2717)
 output: github_document
 ---
 
 ## Motivation
+Motor vehicle collisions are a leading cause of injury and death in urban environments. In New York City, hundreds of crashes are recorded every day, reflecting patterns in traffic volume, street design, driver behavior, and policy initiatives such as *Vision Zero*. By analyzing **when** and **where** crashes occur and **which factors** contribute to severe outcomes, this project aims to generate actionable insights for traffic safety and urban planning. Using the NYC Open Data dataset *“Motor Vehicle Collisions – Crashes”*, we will explore temporal, spatial, and causal patterns in collisions across New York City as well as indicators for injury, fatality, and grouped contributing factors.
 
-Motor vehicle collisions are a leading cause of injury and death in urban settings.  
-In New York City, hundreds of crashes are recorded every day, and these events reflect patterns in traffic volume, street design, driver behavior, and policy interventions such as *Vision Zero*.  
-
-Understanding **when** and **where** crashes occur, and **which factors** contribute to severe outcomes, can provide actionable insights for traffic safety planning and public policy.  
-
-In this project, we will use the NYC Open Data **“Motor Vehicle Collisions – Crashes”** dataset to study temporal, spatial, and causal patterns in motor vehicle collisions across New York City.
 
 ## Team Members
 
-- **Daniel Jiao** (UNI: dj2764) – data acquisition, cleaning, and pipeline setup  
-- **Xinyu Wang** (UNI: xxxxxx) – exploratory data analysis and visualization  
-- **Yuyang Wang** (UNI: yw4660) – modeling and statistical analysis  
-- **Haoyi Tan** (UNI: ht2717) – website, report integration, and screencast  
+- **Daniel Jiao** (UNI: dj2764) 
+- **Xinyu Wang** (UNI: xw3106)
+- **Yuyang Wang** (UNI: yw4660)
+- **Haoyi Tan** (UNI: ht2717)
 
 ## Initial Questions
 
@@ -47,30 +36,16 @@ We plan to focus on the following questions; these may evolve as our analysis pr
 
 ## Data
 
-Our primary dataset is:
+Our analysis uses the NYC Open Data *“Motor Vehicle Collisions – Crashes”* dataset, which contains detailed information on all reported traffic collisions in New York City since 2012. Each record includes the date and time of the crash (`CRASH_DATE`), the borough and location details (` BOROUGH`, ` ZIP_CODE`), the number of people injured or killed (` NUMBER_OF_PERSONS_INJURED`, `NUMBER_OF_PERSONS_KILLED`), and the contributing factors and vehicle types involved (` CONTRIBUTING_FACTOR_VEHICLE_1`, ` VEHICLE_TYPE_CODE_1`). These variables allow us to examine temporal, spatial, and behavioral trends in crash risk and severity across the five NYC boroughs.
 
-- **NYC Open Data – Motor Vehicle Collisions: Crashes**  
-  - Portal: <https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95>  
-  - Unit of observation: one row per reported collision  
-  - Coverage: 2012–present, all five NYC boroughs  
-
-Key variables we expect to use include:
-
-- `CRASH_DATE`, `CRASH_TIME` – date and time of crash  
-- `BOROUGH`, `ZIP_CODE` – borough and ZIP code  
-- `LATITUDE`, `LONGITUDE` – crash coordinates  
-- `NUMBER_OF_PERSONS_INJURED`, `NUMBER_OF_PERSONS_KILLED`  
-- `CONTRIBUTING_FACTOR_VEHICLE_1` … `CONTRIBUTING_FACTOR_VEHICLE_5`  
-- `VEHICLE_TYPE_CODE_1` … `VEHICLE_TYPE_CODE_5`  
-- `ON_STREET_NAME`, `CROSS_STREET_NAME`  
-- `COLLISION_ID` – unique identifier
+- Portal: <https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95>  
 
 ### Data cleaning and preprocessing (planned)
 
 Since we have a large data set, we plan to restrict the main analysis to a recent time window (e.g., **2015–2024**) while keeping earlier years for trend checks. We will filter to observations with non-missing boroughs and valid coordinates.  We will create new variables for `year`, `month`, `weekday`, and `hour` from the crash date and time, along with indicators for injuries or fatalities and grouped categories of contributing factors (e.g., Driver Inattention, Unsafe Speed, Alcohol Involvement, Other).
 
 ## Planned Analyses / Visualizations / Coding Challenges
-We anticipate the following main components:
+
 1. **Exploratory Data Analysis (EDA)**  
    - Time series plots of monthly crash counts and injury/fatality counts by borough.  
    - Distribution of crashes by hour of day and day of week (e.g., heatmaps).  
@@ -121,30 +96,10 @@ Coding challenges we anticipate include:
   - `docs/` or `website/` (project website files)  
 
 ## Planned Timeline
+- **Week 1 (Proposal + Setup):** Finalize questions and roles, set up GitHub repo, clean a subset of data.  
+- **Week 2 (EDA + Visuals):** Summarize by borough, time, severity; make trend and heatmap plots.  
+- **Week 3 (Spatial & Factor Analysis):** Map crash density, analyze contributing factors and vehicle types.  
+- **Week 4 (Modeling + Draft):** Fit models for injury/fatality risk, draft report and integrate visuals.  
+- **Week 5 (Polish + Website):** Finalize report and site, record screencast, check reproducibility.
 
-This timeline may be adjusted after the project review meeting, but our current plan is:
-
-- **Week 1 (Proposal + Setup)**  
-  - Finalize research questions and team roles  
-  - Create GitHub repository and basic folder structure  
-  - Download a subset of data and complete initial cleaning
-
-- **Week 2 (EDA + Basic Visualizations)**  
-  - Summaries by borough, time, and injury/fatality severity  
-  - Initial time trend and heatmap visualizations
-
-- **Week 3 (Spatial & Factor Analysis)**  
-  - Create maps of crash density and hot spots  
-  - Analyze contributing factors and vehicle types
-
-- **Week 4 (Modeling + Draft Report)**  
-  - Fit preliminary models for injury/fatality risk  
-  - Draft written report and integrate figures
-
-- **Week 5 (Polish + Website + Screencast)**  
-  - Finalize report and website structure  
-  - Record and upload screencast  
-  - Final checks for reproducibility and clarity
-
-We will discuss this plan with the teaching team during the project review meeting and adjust as needed.
 
