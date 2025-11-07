@@ -79,35 +79,26 @@ Key variables we expect to use include:
 
 ### Data cleaning and preprocessing (planned)
 
-Because the full dataset is large (millions of rows), we plan to:
-
-- Restrict the main analysis to a recent time window (e.g.,
-  **2015–2024**) while keeping earlier years for trend checks.  
-- Filter to observations with non-missing boroughs and valid
-  coordinates.  
-- Create new variables:
-  - `year`, `month`, `weekday`, `hour` from `CRASH_DATE` and
-    `CRASH_TIME`  
-  - indicators for any injury / any fatality  
-  - grouped categories of contributing factors (e.g., *Driver
-    Inattention*, *Unsafe Speed*, *Alcohol Involvement*, *Other*).  
-- Remove obvious duplicates or records with impossible values (e.g.,
-  negative counts).
-
-We will use **R**, primarily the `tidyverse` ecosystem, for data import,
-cleaning, and analysis.
+Since we have a large data set, we plan to restrict the main analysis to
+a recent time window (e.g., **2015–2024**) while keeping earlier years
+for trend checks. We will filter to observations with non-missing
+boroughs and valid coordinates. We will create new variables for `year`,
+`month`, `weekday`, and `hour` from the crash date and time, along with
+indicators for injuries or fatalities and grouped categories of
+contributing factors (e.g., Driver Inattention, Unsafe Speed, Alcohol
+Involvement, Other).
 
 ## Planned Analyses / Visualizations / Coding Challenges
 
-We anticipate the following main components:
+We anticipate the following main components: 1. **Exploratory Data
+Analysis (EDA)**  
+- Time series plots of monthly crash counts and injury/fatality counts
+by borough.  
+- Distribution of crashes by hour of day and day of week (e.g.,
+heatmaps).  
+- Top contributing factors overall and stratified by borough or time of
+day.
 
-1.  **Exploratory Data Analysis (EDA)**
-    - Time series plots of monthly crash counts and injury/fatality
-      counts by borough.  
-    - Distribution of crashes by hour of day and day of week (e.g.,
-      heatmaps).  
-    - Top contributing factors overall and stratified by borough or time
-      of day.
 2.  **Spatial analysis**
     - Map crash locations using `leaflet` or `ggplot2` with spatial data
       (`sf`).  
@@ -121,7 +112,7 @@ We anticipate the following main components:
       - Summary statistics  
       - Time-series plots with vertical reference lines  
       - Simple regression / interrupted time series–style comparisons
-        (if appropriate).
+        (if appropriate).  
 4.  **Modeling (injury / fatality risk)**
     - Build exploratory logistic regression models for:
       - probability of any injury, and/or  
@@ -136,15 +127,14 @@ We anticipate the following main components:
     - Potential interactive elements (e.g., interactive maps or hover
       tooltips) on the project website.
 
-Coding challenges we anticipate include:
-
-- Efficiently handling a large dataset (memory and speed).  
+Coding challenges we anticipate include: - Efficiently handling a large
+dataset (memory and speed).  
 - Working with date-time variables and combining `CRASH_DATE` and
-  `CRASH_TIME`.  
+`CRASH_TIME`.  
 - Cleaning and recoding free-text contributing factor variables into
-  meaningful groups.  
+meaningful groups.  
 - Integrating static and (optionally) interactive visualizations into a
-  reproducible website.
+reproducible website.
 
 ## Intended Final Products
 
@@ -159,9 +149,8 @@ Coding challenges we anticipate include:
   - Detailed EDA and analysis pages  
   - Embedded full report
 
-- **Screencast (≈2 minutes)**  
-  A narrated video that walks through the project motivation and key
-  visualizations, aimed at classmates and a general audience.
+- **Screencast**  
+  A narrated video that walks through our project for the audience.
 
 - **GitHub repository**  
   Public repo containing:
