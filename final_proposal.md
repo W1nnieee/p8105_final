@@ -27,26 +27,17 @@ as indicators for injury, fatality, and grouped contributing factors.
 We plan to focus on the following questions; these may evolve as our
 analysis progresses:
 
-1.  **Temporal trends**
-    - How have the number and severity of crashes changed over time
-      (2012–2024)?  
-    - Are there clear **seasonal patterns** or **daily/weekly cycles**
-      in crash frequency?
-2.  **Spatial variation**
-    - Which boroughs and neighborhoods experience the highest collision
-      rates and most severe crashes?  
-    - Can we identify “hot spots” of collisions using spatial
-      visualization?
-3.  **Contributing factors**
-    - What are the most common **contributing factors** (e.g., driver
-      inattention, unsafe speed, alcohol involvement)?  
-    - How do these factors differ by borough, time of day, or vehicle
-      type (e.g., private cars vs taxis vs bicycles)?
-4.  **Policy evaluation (Vision Zero)**
-    - Did the launch of NYC’s *Vision Zero* initiative in 2014 coincide
-      with noticeable changes in crash counts and fatalities?  
-    - Are trends in serious injury and fatal crashes different before
-      and after 2014?
+1.  **Temporal trends** – How have crash counts and severity changed
+    over time（2012-2014）？ Are there daily or seasonal patterns?
+2.  **Spatial variation** – Which boroughs and neighborhoods have the
+    highest crash rates? Where are “hot spots”?  
+3.  **Contributing factors** – What are the most common causes (e.g.,
+    inattention, speeding, alcohol)? How do they differ by time or
+    vehicle type? (e.g., private cars vs taxis vs bicycles)
+4.  **Policy evaluation (Vision Zero)** - Did the launch of NYC’s
+    *Vision Zero* initiative in 2014 coincide with noticeable changes in
+    crash counts and fatalities? - Are trends in serious injury and
+    fatal crashes different before and after 2014?
 
 ## Data
 
@@ -80,17 +71,13 @@ Involvement, Other).
 1.  **Exploratory Data Analysis (EDA)**
     - Time series plots of monthly crash counts and injury/fatality
       counts by borough.  
-    - Distribution of crashes by hour of day and day of week (e.g.,
-      heatmaps).  
+    - Distribution of crashes by hour of day and day of week.  
     - Top contributing factors overall and stratified by borough or time
       of day.
 2.  **Spatial analysis**
-    - Map crash locations using `leaflet` or `ggplot2` with spatial data
-      (`sf`).  
+    - Map crash locations with spatial data.  
     - Aggregate to neighborhood or ZIP code for **crash density**
-      visualizations.  
-    - Identify high-risk areas (“hot spots”) and compare across
-      boroughs.
+      visualizations.
 3.  **Policy / temporal comparison**
     - Compare crashes **before vs after 2014** (Vision Zero start)
       using:
