@@ -1,0 +1,147 @@
+---
+title: "About the Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+```
+
+# Data Source
+
+This project uses the **Motor Vehicle Collisions – Crashes** dataset published by the  
+**New York City Police Department (NYPD)** via **NYC Open Data**.
+
+- **Link:** https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95  
+- **Unit of observation:** Each row represents a single motor vehicle collision.  
+- **Key fields include:**  
+  - Date and time of crash  
+  - Borough  
+  - Latitude and longitude  
+  - Number of persons injured or killed  
+  - Contributing factors  
+  - Vehicle types  
+
+The raw dataset contains hundreds of thousands of observations and dozens of variables.  
+We performed cleaning to standardize variable names, construct time variables, and remove invalid rows.
+
+---
+
+# Data Import
+
+Before cleaning, the raw dataset is loaded from our `data/` directory.
+
+```{r load-raw}
+mvc_raw <- read_csv("data/mvc_raw.csv", show_col_types = FALSE)
+mvc_raw |> glimpse()
+```
+
+---
+
+# Data Cleaning
+
+We performed the following cleaning steps:
+
+1. **Standardized variable names** using `janitor::clean_names()`.  
+2. **Combined crash_date and crash_time** into a single `crash_datetime` variable.  
+3. Extracted **year**, **month**, **weekday**, and **hour**.  
+4. Created indicators for **any injury** and **any fatality**.  
+5. Removed rows with missing borough or missing geolocation.  
+6. Selected a clean subset of variables relevant to our analysis.  
+
+The cleaning code is below:
+
+```{r cleaning}
+mvc_clean <- mvc_raw |>
+  clean_names() |>
+  mutate(
+    crash_datetime = ymd_hms(paste(crash_date, crash_time)),
+    year  = year(crash_datetime),
+    month = month(crash_datetime, label = TRUE),
+    wday  = wday(crash_datetime, label = TRUE),
+    hour  = hour(crash_datetime),
+    any_injury = if_else(number_of_persons_injured > 0, 1L, 0L),
+    any_death  = if_else(number_of_persons_killed > 0, 1L, 0L)
+  ) |>
+  filter(
+    !is.na(latitude),
+    !is.na(longitude),
+    !is.na(borough)
+  ) |>
+  select(
+    crash_datetime, year, month, wday, hour,
+    borough,
+    latitude, longitude,
+    number_of_persons_injured,
+    number_of_persons_killed,
+    any_injury, any_death,
+    starts_with("contributing_factor")
+  )
+```
+
+---
+
+# Save & Reload Cleaned Data
+
+```{r save}
+write_csv(mvc_clean, "data/mvc_clean.csv")
+```
+
+To ensure reproducibility across pages, the cleaned dataset is reloaded:
+
+```{r load-clean}
+mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+```
+
+---
+
+# Summary of Cleaned Data
+
+Below is a summary of the cleaned dataset:
+
+```{r skim}
+mvc_clean |>
+  glimpse()
+```
+
+```{r count}
+mvc_clean |>
+  summarize(
+    total_records = n(),
+    total_injuries = sum(number_of_persons_injured),
+    total_deaths = sum(number_of_persons_killed)
+  )
+```
+
+---
+
+# Variables Used in Analysis
+
+The cleaned dataset includes the following fields:
+
+- **crash_datetime** – Combined date/time of crash  
+- **year, month, wday, hour** – Extracted time features  
+- **borough** – Manhattan / Brooklyn / Queens / Bronx / Staten Island  
+- **latitude, longitude** – Geographic coordinates  
+- **number_of_persons_injured**  
+- **number_of_persons_killed**  
+- **any_injury** – Indicator for whether injury occurred  
+- **any_death** – Indicator for whether a fatality occurred  
+- **contributing_factor_\*** – NYPD-reported contributing factors  
+
+These variables form the basis for exploratory analyses, mapping, and modeling presented in later sections.
+
+---
+
+# Notes
+
+- Observations with missing borough or geolocation were removed to support spatial analysis.  
+- The dataset may still contain reporting noise due to real-world police data collection.  
+- Additional filtering may be applied in modeling pages depending on research needs.

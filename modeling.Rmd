@@ -1,0 +1,167 @@
+---
+title: "Modeling: Statistical Analysis of Collision Severity"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+
+library(tidyverse)
+library(broom)
+library(modelr)
+mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+```
+
+# Modeling Collision Severity
+
+This section investigates which factors are associated with the **number of persons injured** in a collision.  
+Because injury counts are non-negative integers and often skewed, we fit:
+
+- A **baseline linear regression model**  
+- A **Poisson regression model** (preferred for count outcomes)
+
+---
+
+# Data Used
+
+We use the following variables:
+
+- **borough** – location category  
+- **hour** – time of day (converted to integer)  
+- **number_of_persons_injured** – outcome  
+- **number_of_persons_killed** – included as control  
+- **any_injury** – binary indicator  
+
+We avoid use of crash_datetime because date parsing is still being corrected.
+
+---
+
+# Preprocessing
+
+Ensure hour is numeric:
+
+```{r preprocess}
+mvc_model <- mvc_clean |>
+  mutate(
+    hour = suppressWarnings(as.integer(hour)),
+    borough = as.factor(borough)
+  ) |>
+  filter(!is.na(hour))
+```
+
+---
+
+# Baseline Linear Regression
+
+```{r linear-mod}
+lm_mod <- lm(
+  number_of_persons_injured ~ borough + hour + number_of_persons_killed,
+  data = mvc_model
+)
+
+tidy(lm_mod)
+```
+
+### Interpretation
+
+- Coefficients represent the expected change in injury count per unit change in the predictor.  
+- Borough differences capture geographic risk variation.  
+- Hour effects reflect traffic patterns.  
+- Fatal collisions have, by definition, higher injury severity.
+
+This linear model is simple but not ideal because the outcome is a count variable with many zeros.
+
+---
+
+# Poisson Regression (Preferred)
+
+Poisson regression models count outcomes more appropriately.
+
+```{r poisson-mod}
+pois_mod <- glm(
+  number_of_persons_injured ~ borough + hour + number_of_persons_killed,
+  data = mvc_model,
+  family = poisson()
+)
+
+tidy(pois_mod, exponentiate = TRUE)
+```
+
+**Interpretation:**  
+The exponentiated coefficients represent **rate ratios**:
+
+- A rate ratio > 1 means increased injury risk  
+- A rate ratio < 1 means decreased risk  
+
+---
+
+# Model Comparison
+
+```{r model-compare}
+glance(lm_mod) |> mutate(model = "Linear Model")
+glance(pois_mod) |> mutate(model = "Poisson Model")
+```
+
+The Poisson model usually yields:
+
+- Better handling of skew  
+- Better fit for zero-inflated or count-like distributions  
+- More interpretable rate ratios  
+
+---
+
+# Residual Diagnostics
+
+### Linear Model Diagnostics
+
+```{r lm-resid}
+mvc_model |>
+  add_residuals(lm_mod) |>
+  add_predictions(lm_mod) |>
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Linear Model: Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+### Poisson Model Diagnostics
+
+```{r poisson-resid}
+mvc_model |>
+  add_residuals(pois_mod, var = "resid") |>
+  add_predictions(pois_mod, var = "pred") |>
+  ggplot(aes(x = pred, y = resid)) +
+  geom_point(alpha = 0.3, color = "#2C93E8") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Poisson Model: Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+# Summary of Findings
+
+- Geography (borough) is strongly associated with injury severity.  
+- Time of day (hour) meaningfully predicts injury counts.  
+- Fatal collisions correspond to significantly higher injury risk.  
+- Poisson regression provides a better modeling framework than linear regression.  
+
+These results motivate potential extensions such as:
+
+- Negative binomial regression  
+- Zero-inflated Poisson models  
+- Interaction effects (e.g., borough × hour)  
+- Inclusion of weather or traffic volume data  

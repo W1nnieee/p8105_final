@@ -1,0 +1,167 @@
+---
+title: "Mapping Collisions"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+
+library(tidyverse)
+library(leaflet)
+library(leaflet.extras)
+library(viridis)
+library(htmltools)
+
+mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+```
+
+# Mapping Motor Vehicle Collisions in NYC
+
+This section visualizes the geographic distribution of collisions across New York City.  
+Mapping provides insight into spatial clustering, hotspots, and borough-level differences.
+
+---
+
+# ⚠ Data Note
+
+We use latitude and longitude variables directly from the cleaned dataset.  
+This analysis is **independent of date-time fields**, so current date issues will not affect this page.
+
+---
+
+# Basic Leaflet Map (Sampled Points)
+
+Displaying all points may be too slow (hundreds of thousands of collisions),  
+so we sample **5,000 points** for efficient rendering.
+
+```{r leaflet-sample}
+set.seed(123)
+
+mvc_sample <- mvc_clean |>
+  filter(!is.na(latitude), !is.na(longitude)) |>
+  sample_n(size = 5000)
+
+leaflet(mvc_sample) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.5,
+    color = "#2C93E8"
+  )
+```
+
+**Interpretation:**  
+The distribution closely follows NYC’s street network,  
+with dense clusters in Manhattan, Brooklyn, and western Queens.
+
+---
+
+# Colored by Severity (Injury vs Property Damage)
+
+```{r severity-map}
+mvc_sample2 <- mvc_clean |>
+  mutate(
+    severity = case_when(
+      number_of_persons_killed > 0 ~ "Fatal",
+      number_of_persons_injured > 0 ~ "Injury",
+      TRUE ~ "Property Damage Only"
+    )
+  ) |>
+  sample_n(size = 5000)
+
+pal <- colorFactor(
+  palette = c("Property Damage Only" = "#7db7ff",
+              "Injury" = "#2C93E8",
+              "Fatal" = "#FF5733"),
+  domain = mvc_sample2$severity
+)
+
+leaflet(mvc_sample2) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.6,
+    color = ~pal(severity),
+    label = ~htmlEscape(severity)
+  ) |>
+  addLegend(
+    position = "bottomright",
+    pal = pal,
+    values = ~severity,
+    title = "Severity"
+  )
+```
+
+**Interpretation:**  
+Severe crashes (injuries and fatalities) appear throughout the city but cluster more densely in high-traffic corridors.
+
+---
+
+# Heat Map (Density Visualization)
+
+Heatmaps reveal density patterns more clearly than individual points.
+
+```{r heatmap}
+leaflet(mvc_sample) |>
+  addProviderTiles(providers$CartoDB.DarkMatter) |>
+  addHeatmap(
+    lng = ~longitude,
+    lat = ~latitude,
+    blur = 20,
+    max = 0.05,
+    radius = 10
+  )
+```
+
+**Interpretation:**  
+Heatmaps highlight collision hotspots such as:
+
+- Midtown Manhattan  
+- Downtown Brooklyn  
+- Western Queens  
+- Major expressway intersections  
+
+---
+
+# Borough Faceting (Static Plot)
+
+A quick static ggplot showing spatial spread by borough:
+
+```{r faceted}
+mvc_clean |>
+  filter(!is.na(borough)) |>
+  ggplot(aes(x = longitude, y = latitude, color = borough)) +
+  geom_point(alpha = 0.2, size = 0.3) +
+  facet_wrap(~ borough) +
+  scale_color_viridis_d() +
+  coord_equal() +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "Collision Locations by Borough",
+    x = "Longitude",
+    y = "Latitude"
+  )
+```
+
+---
+
+# Summary
+
+Spatial patterns reveal:
+
+- Very high collision density in business districts  
+- Heavy clustering along major arterial roads  
+- Clear borough-level differences  
+- Injury collisions are widely distributed but more concentrated in dense areas  
+
+Mapping provides geographic context that complements earlier descriptive analyses and the statistical modeling that follows.

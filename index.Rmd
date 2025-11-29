@@ -1,0 +1,74 @@
+---
+title: "Fast & Curious: NYC"
+output: html_document
+---
+
+# Fast & Curious: NYC
+
+## Exploring patterns, trends, and risk factors in NYC crashes
+
+**Collaborators**  
+- Daniel Jiao (UNI xxx)  
+- Teammate 2 (UNI xxx)  
+- Teammate 3 (UNI xxx)
+
+---
+
+## Overview
+
+Motor vehicle collisions (MVCs) represent a major public safety issue in New York City.
+
+Using data from NYC Open Data, this project explores:
+
+- When collisions occur  
+- Where they occur  
+- How severe they are  
+- Which factors are associated with injuries and fatalities
+
+This website presents descriptive analyses, spatial mapping, and statistical modeling results to better understand collision patterns and risk factors across the five boroughs.
+
+---
+
+## Data Source
+
+This project uses the following dataset:
+
+- **Dataset:** Motor Vehicle Collisions – Crashes  
+- **Publisher:** New York City Police Department (NYPD)  
+- **Source:** NYC Open Data  
+- **Link:** https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95
+
+Each row corresponds to a single crash and includes date, time, location, injuries, fatalities, vehicle types, and contributing factors.
+
+More details are provided on the **About / Data** page.
+
+---
+
+## Research Questions
+
+We focus on the following questions:
+
+1. **When** do collisions most frequently occur?  
+2. **Where** do collisions occur, and which boroughs are most affected?  
+3. **How severe** are collisions?  
+4. **Which factors** are associated with injuries?
+
+---
+
+## Website Structure
+
+- **Home** – Project overview  
+- **About / Data** – Data source and cleaning  
+- **Exploratory Analyses → Overview** – Basic summaries  
+- **Exploratory Analyses → Time Trends** – Temporal patterns  
+- **Mapping** – Collision locations in NYC  
+- **Modeling** – Statistical models  
+- **Conclusions** – Key findings  
+- **Project Report** – Full report  
+- **References** – Citations
+
+---
+
+## Acknowledgements
+
+This project is completed as part of the P8105 Data Science course.

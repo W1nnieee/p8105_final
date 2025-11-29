@@ -1,0 +1,145 @@
+---
+title: "Exploratory Analyses: Overview"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(scales)
+mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+```
+
+# Overview
+
+This section provides an initial descriptive summary of motor vehicle collisions in New York City.  
+We focus on broad patterns across boroughs, collision severity, and basic temporal features.
+
+---
+
+# Collision Counts by Borough
+
+```{r borough-count}
+mvc_clean |>
+  count(borough, name = "n") |>
+  ggplot(aes(x = reorder(borough, n), y = n)) +
+  geom_col(fill = "#2C93E8") +
+  coord_flip() +
+  labs(
+    title = "Number of Collisions by Borough",
+    x = "Borough",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+**Interpretation:**  
+Brooklyn and Queens typically report the highest number of collisions, reflecting both population density and road network volume.  
+Staten Island consistently shows the lowest collision frequency.
+
+---
+
+# Severity Distribution
+
+We classify collisions into three levels:
+
+- **Property Damage Only (PDO)**  
+- **Injury** (at least one person injured)  
+- **Fatal** (at least one person killed)
+
+```{r severity}
+mvc_clean |>
+  mutate(
+    severity = case_when(
+      number_of_persons_killed > 0 ~ "Fatal",
+      number_of_persons_injured > 0 ~ "Injury",
+      TRUE ~ "Property Damage Only"
+    )
+  ) |>
+  count(severity) |>
+  ggplot(aes(x = severity, y = n, fill = severity)) +
+  geom_col() +
+  scale_fill_manual(values = c(
+    "Property Damage Only" = "#7db7ff",
+    "Injury" = "#2C93E8",
+    "Fatal" = "#FF5733"
+  )) +
+  labs(
+    title = "Collision Severity Distribution",
+    x = NULL,
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+**Interpretation:**  
+Most collisions result in property damage only.  
+Injury collisions are common, while fatal collisions remain rare but non-negligible.
+
+---
+
+# Collisions by Hour of Day
+
+Hourly patterns reflect traffic flow and commuting behavior.
+
+```{r hourly}
+mvc_clean |>
+  mutate(hour = as.integer(hour)) |>
+  filter(!is.na(hour), hour >= 0, hour <= 23) |>
+  count(hour) |>
+  ggplot(aes(x = hour, y = n)) +
+  geom_line(color = "#2C93E8", size = 1.2) +
+  geom_point(size = 2, color = "#1a5ca0") +
+  scale_x_continuous(breaks = 0:23) +
+  labs(
+    title = "Collisions by Hour of Day",
+    x = "Hour of Day",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14)
+
+```
+
+**Interpretation:**  
+Clear peaks appear during **morning (8–10 AM)** and **evening (4–6 PM)** rush hours.  
+Lower rates occur overnight, especially around 3–5 AM.
+
+---
+
+# Collisions by Day of Week
+
+```{r weekday}
+mvc_clean |>
+  count(wday) |>
+  ggplot(aes(x = wday, y = n)) +
+  geom_col(fill = "#2C93E8") +
+  labs(
+    title = "Collisions by Day of Week",
+    x = "Day of Week",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+**Interpretation:**  
+Weekdays generally show higher collision counts than weekends, likely driven by commuter volume.
+
+---
+
+# Summary
+
+These descriptive patterns illustrate:
+
+- Large differences across boroughs  
+- Predictable temporal patterns (rush hours and weekdays)  
+- Relatively low proportion of fatal collisions  
+- Injury collisions forming a substantial share of all MVCs  
+
+More detailed temporal analyses (seasonality, long-term trends) are presented in the **Time Trends** section.

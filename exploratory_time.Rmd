@@ -1,0 +1,165 @@
+---
+title: "Exploratory Analyses: Time Trends"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(viridis)
+mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+```
+
+# Time Trends
+
+This section examines temporal patterns of motor vehicle collisions in New York City across different time scales: hourly, daily, monthly, and yearly.
+
+---
+
+# Monthly Trends
+
+```{r monthly}
+mvc_clean <- mvc_raw |>
+  clean_names() |>
+  mutate(
+    crash_date = as.character(crash_date),
+    crash_time = as.character(crash_time),
+
+    crash_datetime = suppressWarnings(
+      ymd_hm(paste(crash_date, crash_time))
+    ),
+
+    year  = year(crash_datetime),
+    month = month(crash_datetime, label = TRUE),
+    wday  = wday(crash_datetime, label = TRUE),
+    hour  = hour(crash_datetime)
+  ) |>
+  filter(
+    !is.na(crash_datetime),      # 🚀 必须
+    !is.na(latitude),
+    !is.na(longitude),
+    !is.na(borough)
+  )
+
+```
+
+**Interpretation:**  
+Monthly counts often show seasonal patterns, with variations that may correspond to weather, traffic volume, or policy changes.
+
+---
+
+# Yearly Trends
+
+```{r yearly}
+mvc_clean |>
+  count(year) |>
+  ggplot(aes(x = year, y = n)) +
+  geom_line(size = 1.2, color = "#1a5ca0") +
+  geom_point(size = 2, color = "#2C93E8") +
+  scale_x_continuous(breaks = unique(mvc_clean$year)) +
+  labs(
+    title = "Annual Collision Totals",
+    x = "Year",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+**Interpretation:**  
+Long-term variation may reflect population changes, infrastructure alteration, or shocks such as COVID-era mobility reductions.
+
+---
+
+# Day of Week
+
+```{r weekday}
+mvc_clean |>
+  count(wday) |>
+  ggplot(aes(x = wday, y = n)) +
+  geom_col(fill = "#2C93E8") +
+  labs(
+    title = "Collisions by Day of Week",
+    x = "Day of Week",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+**Interpretation:**  
+Weekday traffic patterns produce higher collision counts Monday–Friday, while weekends show lower totals.
+
+---
+
+# Hour of Day
+
+```{r hour}
+mvc_clean |>
+  mutate(hour = as.integer(hour)) |>
+  filter(!is.na(hour), hour >= 0, hour <= 23) |>
+  count(hour) |>
+  ggplot(aes(x = hour, y = n)) +
+  geom_line(color = "#2C93E8", size = 1.2) +
+  geom_point(size = 2, color = "#1a5ca0") +
+  scale_x_continuous(breaks = 0:23) +
+  labs(
+    title = "Collisions by Hour of Day",
+    x = "Hour",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+**Interpretation:**  
+Collision activity spikes during commuting hours (8–10 AM and 4–6 PM).
+
+---
+
+# Hour by Day of Week Heatmap (Advanced)
+
+This heatmap visualizes joint patterns across **hour of day** and **day of week**.
+
+```{r heatmap}
+mvc_clean |>
+  mutate(
+    hour = as.integer(hour),
+    wday = factor(wday, levels = c("Sun","Mon","Tue","Wed","Thu","Fri","Sat"))
+  ) |>
+  filter(!is.na(hour), hour >= 0, hour <= 23) |>
+  count(wday, hour) |>
+  ggplot(aes(x = hour, y = wday, fill = n)) +
+  geom_tile() +
+  scale_fill_viridis(option = "C", direction = -1) +
+  labs(
+    title = "Collisions by Hour and Day of Week",
+    x = "Hour of Day",
+    y = "Day of Week",
+    fill = "Count"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+**Interpretation:**  
+The heatmap reveals:
+
+- Morning and evening rush peaks across all weekdays  
+- Lower overnight crash counts  
+- Saturday afternoon shows elevated activity compared to Sunday  
+
+---
+
+# Summary
+
+These analyses reveal:
+
+- Strong diurnal (hourly) patterns  
+- Weekday vs weekend differences  
+- Monthly and annual variation  
+- Clear joint structure in hour × weekday patterns  
+
+These insights guide later modeling and help contextualize borough-level and spatial analyses.
