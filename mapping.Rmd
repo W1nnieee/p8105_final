@@ -16,7 +16,7 @@ library(leaflet.extras)
 library(viridis)
 library(htmltools)
 
-mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
 
 # Mapping Motor Vehicle Collisions in NYC

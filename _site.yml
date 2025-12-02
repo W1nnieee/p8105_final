@@ -1,0 +1,39 @@
+name: "p8105_final_project"
+output_dir: "docs"
+
+navbar:
+  title: "NYC Collision Analysis"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Data"
+      href: about_data.html
+    - text: "Exploratory"
+      menu:
+        - text: "Overview"
+          href: exploratory_overview.html
+        - text: "Time Trends"
+          href: exploratory_time.html
+    - text: "Mapping"
+      href: mapping.html
+    - text: "Modeling"
+      href: modeling.html
+    - text: "Conclusions"
+      href: conclusions.html
+
+  right:
+    - icon: fa-github
+      href: "https://github.com/YOURUSER/yourrepo"
+
+output:
+  html_document:
+    theme:
+      version: 5                
+      bootswatch: minty         # minty / litera / lumen / sandstone
+    css: styles.css
+    toc: true
+    toc_float: true
+    anchor_sections: true
+    code_folding: show          
+    smooth_scroll: true
+    highlight: tango

@@ -39,7 +39,7 @@ We performed cleaning to standardize variable names, construct time variables, a
 Before cleaning, the raw dataset is loaded from our `data/` directory.
 
 ```{r load-raw}
-mvc_raw <- read_csv("data/mvc_raw.csv", show_col_types = FALSE)
+mvc_raw <- read_csv("E:/Desktop/mvc_raw.csv", show_col_types = FALSE)
 mvc_raw |> glimpse()
 ```
 
@@ -91,13 +91,13 @@ mvc_clean <- mvc_raw |>
 # Save & Reload Cleaned Data
 
 ```{r save}
-write_csv(mvc_clean, "data/mvc_clean.csv")
+write_csv(mvc_clean, "E:/Desktop/mvc_clean.csv")
 ```
 
 To ensure reproducibility across pages, the cleaned dataset is reloaded:
 
 ```{r load-clean}
-mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
 
 ---
