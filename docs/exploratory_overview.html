@@ -477,49 +477,40 @@ div.tocify {
 </div>
 
 
-<div id="overview" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Overview<a href="#overview" class="anchor-section"
+<div id="exploratory-analyses-overview"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">Exploratory Analyses: Overview<a
+href="#exploratory-analyses-overview" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
-<p>This section provides an initial descriptive summary of motor vehicle
-collisions in New York City.<br />
-We focus on broad patterns across boroughs, collision severity, and
-basic temporal features.</p>
+<p>This section provides a descriptive overview of NYC motor vehicle
+collisions (MVCs), including borough patterns, severity distribution,
+and temporal trends.</p>
 <hr />
 </div>
 <div id="collision-counts-by-borough" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Collision Counts by Borough<a
+<h1 class="hasAnchor">1. Collision Counts by Borough<a
 href="#collision-counts-by-borough" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">count</span>(borough, <span class="at">name =</span> <span class="st">&quot;n&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(borough, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Number of Collisions by Borough&quot;</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Borough&quot;</span>,</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_overview_files/figure-html/borough-count-1.png" width="672" /></p>
-<p><strong>Interpretation:</strong><br />
-Brooklyn and Queens typically report the highest number of collisions,
-reflecting both population density and road network volume.<br />
-Staten Island consistently shows the lowest collision frequency.</p>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(borough, n), <span class="at">y =</span> n, <span class="at">fill =</span> borough)) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Total Collisions by Borough&quot;</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Borough&quot;</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Collisions&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <hr />
 </div>
 <div id="severity-distribution" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Severity Distribution<a
+<h1 class="hasAnchor">2. Severity Distribution<a
 href="#severity-distribution" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
-<p>We classify collisions into three levels:</p>
-<ul>
-<li><strong>Property Damage Only (PDO)</strong><br />
-</li>
-<li><strong>Injury</strong> (at least one person injured)<br />
-</li>
-<li><strong>Fatal</strong> (at least one person killed)</li>
-</ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    <span class="at">severity =</span> <span class="fu">case_when</span>(</span>
@@ -531,86 +522,175 @@ aria-label="Anchor link to header"></a></h1>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="fu">count</span>(severity) <span class="sc">|&gt;</span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> severity, <span class="at">y =</span> n, <span class="at">fill =</span> severity)) <span class="sc">+</span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="st">&quot;Property Damage Only&quot;</span> <span class="ot">=</span> <span class="st">&quot;#7db7ff&quot;</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="st">&quot;Injury&quot;</span> <span class="ot">=</span> <span class="st">&quot;#2C93E8&quot;</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="st">&quot;Fatal&quot;</span> <span class="ot">=</span> <span class="st">&quot;#FF5733&quot;</span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collision Severity Distribution&quot;</span>,</span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="exploratory_overview_files/figure-html/severity-1.png" width="672" /></p>
-<p><strong>Interpretation:</strong><br />
-Most collisions result in property damage only.<br />
-Injury collisions are common, while fatal collisions remain rare but
-non-negligible.</p>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collision Severity Distribution&quot;</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <hr />
 </div>
 <div id="collisions-by-hour-of-day" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Collisions by Hour of Day<a
+<h1 class="hasAnchor">3. Collisions by Hour of Day<a
 href="#collisions-by-hour-of-day" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
-<p>Hourly patterns reflect traffic flow and commuting behavior.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hour =</span> <span class="fu">as.integer</span>(hour)) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hour), hour <span class="sc">&gt;=</span> <span class="dv">0</span>, hour <span class="sc">&lt;=</span> <span class="dv">23</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">count</span>(hour) <span class="sc">|&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>, <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;#1a5ca0&quot;</span>) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Hour of Day&quot;</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Hour of Day&quot;</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_overview_files/figure-html/hourly-1.png" width="672" /></p>
-<p><strong>Interpretation:</strong><br />
-Clear peaks appear during <strong>morning (8–10 AM)</strong> and
-<strong>evening (4–6 PM)</strong> rush hours.<br />
-Lower rates occur overnight, especially around 3–5 AM.</p>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hour =</span> <span class="fu">hour</span>(crash_time)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">count</span>(hour) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;#1f78b4&quot;</span>, <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;#084c7f&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Hour of Day&quot;</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Hour&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <hr />
 </div>
 <div id="collisions-by-day-of-week" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Collisions by Day of Week<a
+<h1 class="hasAnchor">4. Collisions by Day of Week<a
 href="#collisions-by-day-of-week" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">count</span>(wday) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> wday, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Day of Week&quot;</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Day of Week&quot;</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_overview_files/figure-html/weekday-1.png" width="672" /></p>
-<p><strong>Interpretation:</strong><br />
-Weekdays generally show higher collision counts than weekends, likely
-driven by commuter volume.</p>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weekday =</span> <span class="fu">wday</span>(crash_date, <span class="at">label =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">count</span>(weekday) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> weekday, <span class="at">y =</span> n, <span class="at">fill =</span> weekday)) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Day of Week&quot;</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="monthly-trend-over-time" class="section level1 hasAnchor">
+<h1 class="hasAnchor">5. Monthly Trend Over Time<a
+href="#monthly-trend-over-time" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">count</span>(crash_month) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> crash_month, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>, <span class="at">size =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;#084c7f&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Monthly Collision Trend Over Time&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Collisions&quot;</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="heatmap-hour-weekday" class="section level1 hasAnchor">
+<h1 class="hasAnchor">6. Heatmap: Hour × Weekday<a
+href="#heatmap-hour-weekday" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">hour</span>(crash_time),</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="at">weekday =</span> <span class="fu">wday</span>(crash_date, <span class="at">label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="fu">count</span>(weekday, hour) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> weekday, <span class="at">fill =</span> n)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Heatmap of Collisions by Hour and Day of Week&quot;</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Hour of Day&quot;</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Day of Week&quot;</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Collisions&quot;</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="top-10-contributing-factors" class="section level1 hasAnchor">
+<h1 class="hasAnchor">7. Top 10 Contributing Factors<a
+href="#top-10-contributing-factors" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">count</span>(contributing_factor_vehicle_1) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(contributing_factor_vehicle_1, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#1f78b4&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Top 10 Contributing Factors&quot;</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Contributing Factor&quot;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Count&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="top-10-vehicle-types-in-crashes"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">8. Top 10 Vehicle Types in Crashes<a
+href="#top-10-vehicle-types-in-crashes" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">count</span>(vehicle_type_code_1) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(vehicle_type_code_1, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#33a02c&quot;</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Top 10 Vehicle Types in Crashes&quot;</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Vehicle Type&quot;</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Count&quot;</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="hourly-injuries-vs-fatalities"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">9. Hourly Injuries vs Fatalities<a
+href="#hourly-injuries-vs-fatalities" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">hour</span>(crash_time),</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>    <span class="at">severity =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>      number_of_persons_killed <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Fatal&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>      number_of_persons_injured <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Injury&quot;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;PDO&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    )</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>  <span class="fu">count</span>(hour, severity) <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> n, <span class="at">color =</span> severity)) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>) <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Hourly Pattern of Injuries and Fatalities&quot;</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Hour&quot;</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;Severity&quot;</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_overview_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <hr />
 </div>
 <div id="summary" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Summary<a href="#summary" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
-<p>These descriptive patterns illustrate:</p>
-<ul>
-<li>Large differences across boroughs<br />
-</li>
-<li>Predictable temporal patterns (rush hours and weekdays)<br />
-</li>
-<li>Relatively low proportion of fatal collisions<br />
-</li>
-<li>Injury collisions forming a substantial share of all MVCs</li>
-</ul>
-<p>More detailed temporal analyses (seasonality, long-term trends) are
-presented in the <strong>Time Trends</strong> section.</p>
+<p>These exploratory analyses reveal consistent spatial differences
+across boroughs, strong temporal patterns (especially during rush hours
+and weekdays), and clear distributions of injury severity. These results
+guide more advanced analyses in subsequent sections.</p>
 </div>
 
 

@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(lubridate)
 library(janitor)
+library(hms)
 ```
 
 # Data Source
@@ -39,7 +40,8 @@ We performed cleaning to standardize variable names, construct time variables, a
 Before cleaning, the raw dataset is loaded from our `data/` directory.
 
 ```{r load-raw}
-mvc_raw <- read_csv("E:/Desktop/mvc_raw.csv", show_col_types = FALSE)
+mvc_raw <- read_csv("E:/Desktop/mvc_raw.csv", show_col_types = FALSE) |>
+clean_names()
 mvc_raw |> glimpse()
 ```
 
@@ -59,30 +61,59 @@ We performed the following cleaning steps:
 The cleaning code is below:
 
 ```{r cleaning}
-mvc_clean <- mvc_raw |>
-  clean_names() |>
+# -----------------------------
+# 1. 删除无用的变量（高 NA 垃圾变量）
+# -----------------------------
+
+cols_to_drop <- c(
+  "vehicle_type_code_3", 
+  "vehicle_type_code_4",
+  "vehicle_type_code_5",
+  "contributing_factor_vehicle_3",
+  "contributing_factor_vehicle_4",
+  "contributing_factor_vehicle_5",
+  "off_street_name",
+  "location"
+)
+
+mvc_clean <- mvc_raw %>%
+  select(-all_of(cols_to_drop))
+
+# -----------------------------
+# 2. 删除关键 NA 行
+# -----------------------------
+mvc_clean <- mvc_clean %>%
+  
+  # 经纬度缺失 → 必删（无法分析位置）
+  filter(!is.na(latitude),
+         !is.na(longitude)) %>%
+  
+  # 核心字段不能 NA
+  filter(!is.na(crash_date),
+         !is.na(crash_time)) %>%
+  
+  # 伤亡极少 NA → 安全删除
+  filter(!is.na(number_of_persons_injured),
+         !is.na(number_of_persons_killed))
+
+# -----------------------------
+# 3. 转换日期/时间格式
+# -----------------------------
+mvc_clean <- mvc_clean %>%
   mutate(
-    crash_datetime = ymd_hms(paste(crash_date, crash_time)),
-    year  = year(crash_datetime),
-    month = month(crash_datetime, label = TRUE),
-    wday  = wday(crash_datetime, label = TRUE),
-    hour  = hour(crash_datetime),
-    any_injury = if_else(number_of_persons_injured > 0, 1L, 0L),
-    any_death  = if_else(number_of_persons_killed > 0, 1L, 0L)
-  ) |>
-  filter(
-    !is.na(latitude),
-    !is.na(longitude),
-    !is.na(borough)
-  ) |>
-  select(
-    crash_datetime, year, month, wday, hour,
-    borough,
-    latitude, longitude,
-    number_of_persons_injured,
-    number_of_persons_killed,
-    any_injury, any_death,
-    starts_with("contributing_factor")
+    crash_date = mdy(crash_date),      # 你的格式为 "MM/DD/YYYY"
+    crash_year = year(crash_date),
+    crash_month = floor_date(crash_date, "month"),
+    crash_time = as_hms(crash_time)
+  )
+
+# -----------------------------
+# 4. 补充几个衍生变量（可选）
+# -----------------------------
+mvc_clean <- mvc_clean %>%
+  mutate(
+    any_injury = number_of_persons_injured > 0,
+    any_death  = number_of_persons_killed  > 0
   )
 ```
 

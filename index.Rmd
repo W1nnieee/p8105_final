@@ -3,14 +3,13 @@ title: "Fast & Curious: NYC"
 output: html_document
 ---
 
-# Fast & Curious: NYC
-
 ## Exploring patterns, trends, and risk factors in NYC crashes
 
 **Collaborators**  
-- Daniel Jiao (UNI xxx)  
-- Teammate 2 (UNI xxx)  
-- Teammate 3 (UNI xxx)
+- Daniel Jiao (dj2764)  
+- Yuyang Wang (yw4660)  
+- Xinyu Wang (xw3106)
+- Haoyi Tan (ht2717)
 
 ---
 

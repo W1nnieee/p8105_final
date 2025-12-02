@@ -9,157 +9,167 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE
 )
+
 library(tidyverse)
 library(lubridate)
-library(scales)
 library(viridis)
+library(scales)
 mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
 
 # Time Trends
 
-This section examines temporal patterns of motor vehicle collisions in New York City across different time scales: hourly, daily, monthly, and yearly.
+This section focuses **exclusively on long-term temporal behavior** of NYC motor vehicle collisions.  
+Unlike the Overview page, which summarized daily and hourly structure, this section highlights:
+
+- Multi-year changes  
+- Seasonal patterns  
+- Rolling averages  
+- Policy- and event-related structural shifts  
 
 ---
 
-# Monthly Trends
+# 1. Annual Collision Trends (Long-Term Behavior)
 
-```{r monthly}
-mvc_clean <- mvc_raw |>
-  clean_names() |>
-  mutate(
-    crash_date = as.character(crash_date),
-    crash_time = as.character(crash_time),
-
-    crash_datetime = suppressWarnings(
-      ymd_hm(paste(crash_date, crash_time))
-    ),
-
-    year  = year(crash_datetime),
-    month = month(crash_datetime, label = TRUE),
-    wday  = wday(crash_datetime, label = TRUE),
-    hour  = hour(crash_datetime)
-  ) |>
-  filter(
-    !is.na(crash_datetime),      # 🚀 必须
-    !is.na(latitude),
-    !is.na(longitude),
-    !is.na(borough)
-  )
-
-```
-
-**Interpretation:**  
-Monthly counts often show seasonal patterns, with variations that may correspond to weather, traffic volume, or policy changes.
-
----
-
-# Yearly Trends
-
-```{r yearly}
+```{r annual}
 mvc_clean |>
-  count(year) |>
-  ggplot(aes(x = year, y = n)) +
-  geom_line(size = 1.2, color = "#1a5ca0") +
-  geom_point(size = 2, color = "#2C93E8") +
-  scale_x_continuous(breaks = unique(mvc_clean$year)) +
+  count(crash_year) |>
+  ggplot(aes(x = crash_year, y = n)) +
+  geom_line(size = 1.4, color = "#1f78b4") +
+  geom_point(size = 3, color = "#084c7f") +
+  scale_x_continuous(breaks = unique(mvc_clean$crash_year)) +
   labs(
-    title = "Annual Collision Totals",
+    title = "Annual Collision Totals in NYC",
     x = "Year",
-    y = "Number of Crashes"
+    y = "Number of Collisions"
   ) +
-  theme_minimal(base_size = 14)
+  theme_minimal(base_size = 15)
 ```
 
 **Interpretation:**  
-Long-term variation may reflect population changes, infrastructure alteration, or shocks such as COVID-era mobility reductions.
+This visualization highlights **long-term structural changes** including:
+
+- Gradual decline since Vision Zero (2014)  
+- Sharp reductions in 2020–2021 during COVID mobility restrictions  
+- Partial rebound afterward  
 
 ---
 
-# Day of Week
+# 2. Monthly Seasonal Pattern (Across All Years)
 
-```{r weekday}
+```{r month-season}
 mvc_clean |>
-  count(wday) |>
-  ggplot(aes(x = wday, y = n)) +
-  geom_col(fill = "#2C93E8") +
+  mutate(month_label = month(crash_date, label = TRUE)) |>
+  count(month_label) |>
+  ggplot(aes(x = month_label, y = n, group = 1)) +
+  geom_line(size = 1.2, color = "#2C93E8") +
+  geom_point(size = 2, color = "#084c7f") +
   labs(
-    title = "Collisions by Day of Week",
-    x = "Day of Week",
-    y = "Number of Crashes"
+    title = "Seasonal Pattern of Collisions (Aggregated Across Years)",
+    x = "Month",
+    y = "Total Collisions"
   ) +
-  theme_minimal(base_size = 14)
+  theme_minimal(base_size = 15)
 ```
 
 **Interpretation:**  
-Weekday traffic patterns produce higher collision counts Monday–Friday, while weekends show lower totals.
+A consistent seasonal structure emerges:
+
+- Higher collision levels in **summer and early fall**  
+- Lower activity in **winter**, potentially due to reduced traffic and weather-related caution  
 
 ---
 
-# Hour of Day
+# 3. Month-Year Heatmap (Seasonality × Long-Term)
 
-```{r hour}
-mvc_clean |>
-  mutate(hour = as.integer(hour)) |>
-  filter(!is.na(hour), hour >= 0, hour <= 23) |>
-  count(hour) |>
-  ggplot(aes(x = hour, y = n)) +
-  geom_line(color = "#2C93E8", size = 1.2) +
-  geom_point(size = 2, color = "#1a5ca0") +
-  scale_x_continuous(breaks = 0:23) +
-  labs(
-    title = "Collisions by Hour of Day",
-    x = "Hour",
-    y = "Number of Crashes"
-  ) +
-  theme_minimal(base_size = 14)
-```
-
-**Interpretation:**  
-Collision activity spikes during commuting hours (8–10 AM and 4–6 PM).
-
----
-
-# Hour by Day of Week Heatmap (Advanced)
-
-This heatmap visualizes joint patterns across **hour of day** and **day of week**.
-
-```{r heatmap}
+```{r heatmap-month-year}
 mvc_clean |>
   mutate(
-    hour = as.integer(hour),
-    wday = factor(wday, levels = c("Sun","Mon","Tue","Wed","Thu","Fri","Sat"))
+    year = crash_year,
+    month = month(crash_date, label = TRUE)
   ) |>
-  filter(!is.na(hour), hour >= 0, hour <= 23) |>
-  count(wday, hour) |>
-  ggplot(aes(x = hour, y = wday, fill = n)) +
+  count(year, month) |>
+  ggplot(aes(x = month, y = factor(year), fill = n)) +
   geom_tile() +
-  scale_fill_viridis(option = "C", direction = -1) +
+  scale_fill_viridis(option = "C") +
   labs(
-    title = "Collisions by Hour and Day of Week",
-    x = "Hour of Day",
-    y = "Day of Week",
-    fill = "Count"
+    title = "Heatmap of Collisions by Month and Year",
+    x = "Month",
+    y = "Year",
+    fill = "Collisions"
   ) +
   theme_minimal(base_size = 14)
 ```
 
 **Interpretation:**  
-The heatmap reveals:
+The heatmap allows clear visualization of both:
 
-- Morning and evening rush peaks across all weekdays  
-- Lower overnight crash counts  
-- Saturday afternoon shows elevated activity compared to Sunday  
+- Strong annual seasonality  
+- Structural shocks (e.g., COVID dip)  
+
+---
+
+# 4. 30-Day Rolling Average (Smoothing Short-Term Noise)
+
+```{r rolling}
+mvc_clean |>
+  count(crash_date) |>
+  arrange(crash_date) |>
+  mutate(
+    rolling_30 = zoo::rollmean(n, k = 30, fill = NA, align = "right")
+  ) |>
+  ggplot(aes(x = crash_date)) +
+  geom_line(aes(y = n), alpha = 0.3, color = "#bbbbbb") +
+  geom_line(aes(y = rolling_30), color = "#1f78b4", size = 1.1) +
+  labs(
+    title = "30-Day Rolling Average of Collision Counts",
+    x = "Date",
+    y = "Collisions"
+  ) +
+  theme_minimal(base_size = 15)
+```
+
+**Interpretation:**  
+The smoothed curve reduces daily noise and emphasizes:
+
+- Seasonal cycles  
+- Extended dips (winter months, COVID lockdown)  
+- Long-term decline patterns  
+
+---
+
+# 5. Trend vs Seasonal Decomposition (TS Decomposition)
+
+```{r decomposition, warning=FALSE}
+daily_counts <- mvc_clean |>
+  count(crash_date) |>
+  complete(crash_date = seq(min(crash_date), max(crash_date), by = "day"), fill = list(n = 0))
+
+ts_data <- ts(daily_counts$n, frequency = 365)
+
+decomp <- stl(ts_data, s.window = "periodic")
+
+plot(decomp)
+```
+
+**Interpretation:**  
+This decomposition separates the time series into:
+
+- **Trend** — long-term structural decline  
+- **Seasonal** — strong annual periodicity  
+- **Remainder** — short-term irregular spikes (weather events, holidays)  
 
 ---
 
 # Summary
 
-These analyses reveal:
+Compared to the Overview page, this section emphasizes **long-term and structural temporal dynamics**, showing:
 
-- Strong diurnal (hourly) patterns  
-- Weekday vs weekend differences  
-- Monthly and annual variation  
-- Clear joint structure in hour × weekday patterns  
+- A multi-year decrease in collision frequency  
+- STRONG seasonality across months  
+- COVID-driven structural breaks  
+- Stable weekday effects but shifting long-term traffic patterns  
+- Clear cyclical and trend components via decomposition  
 
-These insights guide later modeling and help contextualize borough-level and spatial analyses.
+These temporal insights inform the modeling phase and contextualize patterns found in spatial and contributing-factor analyses.
+

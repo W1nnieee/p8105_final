@@ -19,3 +19,125 @@ library(htmltools)
 mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
 
+# Mapping Motor Vehicle Collisions in NYC
+
+This section visualizes the geographic distribution of collisions across New York City.
+
+---
+
+# ⚠ Data Note
+
+We use latitude and longitude directly from the cleaned dataset.
+
+---
+
+# 1. Basic Leaflet Map (5,000 samples)
+
+```{r leaflet-sample}
+set.seed(123)
+
+mvc_sample <- mvc_clean |>
+  filter(!is.na(latitude), !is.na(longitude)) |>
+  slice_sample(n = 5000)
+
+leaflet(mvc_sample) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  setView(lng = -73.97, lat = 40.75, zoom = 11) |>
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.5,
+    color = "#2C93E8"
+  )
+```
+
+---
+
+# 2. Severity Map (Property Damage / Injury / Fatal)
+
+```{r severity-map}
+mvc_sample2 <- mvc_clean |>
+  mutate(
+    severity = case_when(
+      number_of_persons_killed > 0 ~ "Fatal",
+      number_of_persons_injured > 0 ~ "Injury",
+      TRUE ~ "Property Damage Only"
+    )
+  ) |>
+  slice_sample(n = 5000)
+
+pal <- colorFactor(
+  palette = c("#7db7ff", "#2C93E8", "#FF5733"),
+  domain = c("Property Damage Only", "Injury", "Fatal")
+)
+
+leaflet(mvc_sample2) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  setView(lng = -73.97, lat = 40.75, zoom = 11) |>
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.6,
+    color = ~pal(severity),
+    label = ~htmlEscape(severity)
+  ) |>
+  addLegend(
+    position = "bottomright",
+    pal = pal,
+    values = mvc_sample2$severity,
+    title = "Severity"
+  )
+```
+
+---
+
+# 3. Heat Map (Collision Density)
+
+```{r heatmap}
+leaflet(mvc_sample) |>
+  addProviderTiles(providers$CartoDB.DarkMatter) |>
+  setView(lng = -73.97, lat = 40.75, zoom = 11) |>
+  addHeatmap(
+    lng = ~longitude,
+    lat = ~latitude,
+    blur = 20,
+    max = 0.05,
+    radius = 10
+  )
+```
+
+---
+
+# 4. Borough Faceting (Static Plot)
+
+```{r faceted}
+mvc_clean |>
+  filter(!is.na(borough)) |>
+  ggplot(aes(x = longitude, y = latitude, color = borough)) +
+  geom_point(alpha = 0.2, size = 0.3) +
+  facet_wrap(~ borough) +
+  scale_color_viridis_d() +
+  coord_equal() +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "Collision Locations by Borough",
+    x = "Longitude",
+    y = "Latitude"
+  )
+```
+
+---
+
+# Summary
+
+Spatial patterns reveal:
+
+- Hotspots in Manhattan, Brooklyn, Western Queens  
+- Severity clustering along major roadways  
+- Borough-level differences in spatial spread  
+
+Mapping provides vital context for subsequent statistical modeling.

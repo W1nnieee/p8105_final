@@ -480,154 +480,191 @@ div.tocify {
 <div id="time-trends" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Time Trends<a href="#time-trends"
 class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This section examines temporal patterns of motor vehicle collisions
-in New York City across different time scales: hourly, daily, monthly,
-and yearly.</p>
+<p>This section focuses <strong>exclusively on long-term temporal
+behavior</strong> of NYC motor vehicle collisions.<br />
+Unlike the Overview page, which summarized daily and hourly structure,
+this section highlights:</p>
+<ul>
+<li>Multi-year changes<br />
+</li>
+<li>Seasonal patterns<br />
+</li>
+<li>Rolling averages<br />
+</li>
+<li>Policy- and event-related structural shifts</li>
+</ul>
 <hr />
 </div>
-<div id="monthly-trends" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Monthly Trends<a href="#monthly-trends"
+<div id="annual-collision-trends-long-term-behavior"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">1. Annual Collision Trends (Long-Term Behavior)<a
+href="#annual-collision-trends-long-term-behavior"
 class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>mvc_clean <span class="ot">&lt;-</span> mvc_raw <span class="sc">|&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="at">crash_date =</span> <span class="fu">as.character</span>(crash_date),</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="at">crash_time =</span> <span class="fu">as.character</span>(crash_time),</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="at">crash_datetime =</span> <span class="fu">suppressWarnings</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>      <span class="fu">ymd_hm</span>(<span class="fu">paste</span>(crash_date, crash_time))</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    ),</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="at">year  =</span> <span class="fu">year</span>(crash_datetime),</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(crash_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>    <span class="at">wday  =</span> <span class="fu">wday</span>(crash_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="at">hour  =</span> <span class="fu">hour</span>(crash_datetime)</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(crash_datetime),      <span class="co"># 🚀 必须</span></span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(latitude),</span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(longitude),</span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(borough)</span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">count</span>(crash_year) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> crash_year, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.4</span>, <span class="at">color =</span> <span class="st">&quot;#1f78b4&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;#084c7f&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">unique</span>(mvc_clean<span class="sc">$</span>crash_year)) <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Annual Collision Totals in NYC&quot;</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Collisions&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_time_files/figure-html/annual-1.png" width="672" /></p>
 <p><strong>Interpretation:</strong><br />
-Monthly counts often show seasonal patterns, with variations that may
-correspond to weather, traffic volume, or policy changes.</p>
+This visualization highlights <strong>long-term structural
+changes</strong> including:</p>
+<ul>
+<li>Gradual decline since Vision Zero (2014)<br />
+</li>
+<li>Sharp reductions in 2020–2021 during COVID mobility
+restrictions<br />
+</li>
+<li>Partial rebound afterward</li>
+</ul>
 <hr />
 </div>
-<div id="yearly-trends" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Yearly Trends<a href="#yearly-trends"
-class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="monthly-seasonal-pattern-across-all-years"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">2. Monthly Seasonal Pattern (Across All Years)<a
+href="#monthly-seasonal-pattern-across-all-years" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">count</span>(year) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">&quot;#1a5ca0&quot;</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">unique</span>(mvc_clean<span class="sc">$</span>year)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">month_label =</span> <span class="fu">month</span>(crash_date, <span class="at">label =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">count</span>(month_label) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month_label, <span class="at">y =</span> n, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;#084c7f&quot;</span>) <span class="sc">+</span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Annual Collision Totals&quot;</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Seasonal Pattern of Collisions (Aggregated Across Years)&quot;</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Total Collisions&quot;</span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_time_files/figure-html/yearly-1.png" width="672" /></p>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_time_files/figure-html/month-season-1.png" width="672" /></p>
 <p><strong>Interpretation:</strong><br />
-Long-term variation may reflect population changes, infrastructure
-alteration, or shocks such as COVID-era mobility reductions.</p>
+A consistent seasonal structure emerges:</p>
+<ul>
+<li>Higher collision levels in <strong>summer and early
+fall</strong><br />
+</li>
+<li>Lower activity in <strong>winter</strong>, potentially due to
+reduced traffic and weather-related caution</li>
+</ul>
 <hr />
 </div>
-<div id="day-of-week" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Day of Week<a href="#day-of-week"
-class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="month-year-heatmap-seasonality-long-term"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">3. Month-Year Heatmap (Seasonality × Long-Term)<a
+href="#month-year-heatmap-seasonality-long-term" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">count</span>(wday) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> wday, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Day of Week&quot;</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Day of Week&quot;</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_time_files/figure-html/weekday-1.png" width="672" /></p>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="at">year =</span> crash_year,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(crash_date, <span class="at">label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">count</span>(year, month) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> <span class="fu">factor</span>(year), <span class="at">fill =</span> n)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Heatmap of Collisions by Month and Year&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Collisions&quot;</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="exploratory_time_files/figure-html/heatmap-month-year-1.png" width="672" /></p>
 <p><strong>Interpretation:</strong><br />
-Weekday traffic patterns produce higher collision counts Monday–Friday,
-while weekends show lower totals.</p>
+The heatmap allows clear visualization of both:</p>
+<ul>
+<li>Strong annual seasonality<br />
+</li>
+<li>Structural shocks (e.g., COVID dip)</li>
+</ul>
 <hr />
 </div>
-<div id="hour-of-day" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Hour of Day<a href="#hour-of-day"
+<div id="day-rolling-average-smoothing-short-term-noise"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">4. 30-Day Rolling Average (Smoothing Short-Term
+Noise)<a href="#day-rolling-average-smoothing-short-term-noise"
 class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hour =</span> <span class="fu">as.integer</span>(hour)) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hour), hour <span class="sc">&gt;=</span> <span class="dv">0</span>, hour <span class="sc">&lt;=</span> <span class="dv">23</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">count</span>(hour) <span class="sc">|&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>, <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;#1a5ca0&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Hour of Day&quot;</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Hour&quot;</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Crashes&quot;</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_time_files/figure-html/hour-1.png" width="672" /></p>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">count</span>(crash_date) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">arrange</span>(crash_date) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">rolling_30 =</span> zoo<span class="sc">::</span><span class="fu">rollmean</span>(n, <span class="at">k =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">align =</span> <span class="st">&quot;right&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> crash_date)) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> n), <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#bbbbbb&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> rolling_30), <span class="at">color =</span> <span class="st">&quot;#1f78b4&quot;</span>, <span class="at">size =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;30-Day Rolling Average of Collision Counts&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Date&quot;</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Collisions&quot;</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="exploratory_time_files/figure-html/rolling-1.png" width="672" /></p>
 <p><strong>Interpretation:</strong><br />
-Collision activity spikes during commuting hours (8–10 AM and 4–6
-PM).</p>
+The smoothed curve reduces daily noise and emphasizes:</p>
+<ul>
+<li>Seasonal cycles<br />
+</li>
+<li>Extended dips (winter months, COVID lockdown)<br />
+</li>
+<li>Long-term decline patterns</li>
+</ul>
 <hr />
 </div>
-<div id="hour-by-day-of-week-heatmap-advanced"
+<div id="trend-vs-seasonal-decomposition-ts-decomposition"
 class="section level1 hasAnchor">
-<h1 class="hasAnchor">Hour by Day of Week Heatmap (Advanced)<a
-href="#hour-by-day-of-week-heatmap-advanced" class="anchor-section"
-aria-label="Anchor link to header"></a></h1>
-<p>This heatmap visualizes joint patterns across <strong>hour of
-day</strong> and <strong>day of week</strong>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>mvc_clean <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">as.integer</span>(hour),</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">wday =</span> <span class="fu">factor</span>(wday, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Sun&quot;</span>,<span class="st">&quot;Mon&quot;</span>,<span class="st">&quot;Tue&quot;</span>,<span class="st">&quot;Wed&quot;</span>,<span class="st">&quot;Thu&quot;</span>,<span class="st">&quot;Fri&quot;</span>,<span class="st">&quot;Sat&quot;</span>))</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hour), hour <span class="sc">&gt;=</span> <span class="dv">0</span>, hour <span class="sc">&lt;=</span> <span class="dv">23</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">count</span>(wday, hour) <span class="sc">|&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> wday, <span class="at">fill =</span> n)) <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Collisions by Hour and Day of Week&quot;</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Hour of Day&quot;</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Day of Week&quot;</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Count&quot;</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="exploratory_time_files/figure-html/heatmap-1.png" width="672" /></p>
+<h1 class="hasAnchor">5. Trend vs Seasonal Decomposition (TS
+Decomposition)<a
+href="#trend-vs-seasonal-decomposition-ts-decomposition"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>daily_counts <span class="ot">&lt;-</span> mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">count</span>(crash_date) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">complete</span>(<span class="at">crash_date =</span> <span class="fu">seq</span>(<span class="fu">min</span>(crash_date), <span class="fu">max</span>(crash_date), <span class="at">by =</span> <span class="st">&quot;day&quot;</span>), <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">0</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(daily_counts<span class="sc">$</span>n, <span class="at">frequency =</span> <span class="dv">365</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>decomp <span class="ot">&lt;-</span> <span class="fu">stl</span>(ts_data, <span class="at">s.window =</span> <span class="st">&quot;periodic&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">plot</span>(decomp)</span></code></pre></div>
+<p><img src="exploratory_time_files/figure-html/decomposition-1.png" width="672" /></p>
 <p><strong>Interpretation:</strong><br />
-The heatmap reveals:</p>
+This decomposition separates the time series into:</p>
 <ul>
-<li>Morning and evening rush peaks across all weekdays<br />
+<li><strong>Trend</strong> — long-term structural decline<br />
 </li>
-<li>Lower overnight crash counts<br />
+<li><strong>Seasonal</strong> — strong annual periodicity<br />
 </li>
-<li>Saturday afternoon shows elevated activity compared to Sunday</li>
+<li><strong>Remainder</strong> — short-term irregular spikes (weather
+events, holidays)</li>
 </ul>
 <hr />
 </div>
 <div id="summary" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Summary<a href="#summary" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
-<p>These analyses reveal:</p>
+<p>Compared to the Overview page, this section emphasizes
+<strong>long-term and structural temporal dynamics</strong>,
+showing:</p>
 <ul>
-<li>Strong diurnal (hourly) patterns<br />
+<li>A multi-year decrease in collision frequency<br />
 </li>
-<li>Weekday vs weekend differences<br />
+<li>STRONG seasonality across months<br />
 </li>
-<li>Monthly and annual variation<br />
+<li>COVID-driven structural breaks<br />
 </li>
-<li>Clear joint structure in hour × weekday patterns</li>
+<li>Stable weekday effects but shifting long-term traffic patterns<br />
+</li>
+<li>Clear cyclical and trend components via decomposition</li>
 </ul>
-<p>These insights guide later modeling and help contextualize
-borough-level and spatial analyses.</p>
+<p>These temporal insights inform the modeling phase and contextualize
+patterns found in spatial and contributing-factor analyses.</p>
 </div>
 
 
