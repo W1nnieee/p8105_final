@@ -18,9 +18,8 @@ navbar:
       href: mapping.html
     - text: "Modeling"
       href: modeling.html
-    - text: "Conclusions"
-      href: conclusions.html
-
+    - text: "Project Report"
+      href: report.html
   right:
     - icon: fa-github
       href: "https://github.com/YOURUSER/yourrepo"
