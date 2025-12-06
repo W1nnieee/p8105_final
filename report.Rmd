@@ -17,6 +17,10 @@ library(leaflet)
 library(leaflet.extras)
 library(viridis)
 library(htmltools)
+library(broom)
+library(modelr)
+
+
 
 mvc_clean <- read_csv("/Users/winniew/Desktop/final1/mvc_clean.csv", show_col_types = FALSE)
 ```
@@ -60,6 +64,7 @@ mvc_clean |>
   theme(legend.position = "none")
 
 ```
+Collisions are unevenly distributed across New York City. Brooklyn records the highest number of crashes, followed by Queens and Manhattan, reflecting their larger populations and higher traffic volumes. The Bronx shows moderately lower totals, while Staten Island has substantially fewer collisions, consistent with its smaller population density and reduced roadway congestion. These spatial differences highlight how urban form and traffic intensity contribute to collision risk across boroughs.
 
 ## How severe are NYC collisions?
 ```{r}
@@ -83,6 +88,7 @@ mvc_clean |>
   theme_minimal(base_size = 15) +
   theme(legend.position = "none")
 ```
+The vast majority of collisions result in property damage only, with injury crashes accounting for a smaller but still substantial proportion of events. This distribution reflects well-established traffic safety patterns: while crashes occur frequently, there's a small fraction involve serious or life-threatening outcomes. The imbalance also underscores the importance of modeling severity as an ordinal outcome, as the categories are highly imbalanced across levels.
 
 ```{r}
 mvc_clean |>
@@ -108,6 +114,7 @@ mvc_clean |>
   theme_minimal(base_size = 15)
 
 ```
+The hourly distribution of collision outcomes reveals strong diurnal patterns. Property-damage-only (PDO) crashes peak sharply during the afternoon and early evening, aligning with increases in traffic volume during commuting hours. Injury crashes follow a similar but muted pattern, with the highest counts occurring between 3 PM and 6 PM. In contrast, fatal crashes remain consistently low throughout the day, showing no pronounced hourly variation due to their rarity. These patterns highlight the strong influence of daily travel cycles on collision frequency and severity.
 
 ## Temporal Patterns
 ```{r}
@@ -126,6 +133,8 @@ mvc_clean |>
   theme_minimal(base_size = 15)
 ```
 
+Collision frequency varies substantially across the day, showing a clear diurnal rhythm. Crashes are least common in the early morning hours (2–5 AM), when road activity is lowest, and rise sharply after 7 AM with the onset of the morning commute. Counts remain elevated throughout the afternoon and peak between 3 PM and 5 PM, coinciding with the evening rush period. The decline after 7 PM reflects reduced traffic volume later in the evening. These patterns demonstrate how daily mobility cycles strongly shape collision risk.
+
 ```{r}
 mvc_clean |>
   mutate(weekday = wday(crash_date, label = TRUE)) |>
@@ -141,6 +150,8 @@ mvc_clean |>
   theme_minimal(base_size = 15) +
   theme(legend.position = "none")
 ```
+
+Weekly patterns show moderately higher collision counts on weekdays, with Friday exhibiting the highest number of crashes. This pattern likely reflects increased travel demand at the end of the workweek, including both commuting and social activity. Weekends, particularly Sunday, show lower totals, consistent with reduced overall traffic. Although the variation across days is less dramatic than the hourly pattern, the results highlight predictable weekly rhythms in traffic exposure.
 
 ```{r}
 mvc_clean |>
@@ -160,6 +171,7 @@ mvc_clean |>
   ) +
   theme_minimal(base_size = 15)
 ```
+The heatmap above illustrates clear temporal regularities in collision activity. In all the weekdays, crashes are concentrated between late morning and early evening, with the highest intensity occurring during the afternoon commute. Early morning hours show consistently low activity throughout the week. Weekend patterns are similar but less pronounced, reflecting reduced work-related travel. Overall, the heatmap highlights how collision risk is jointly shaped by hourly traffic cycles and weekly mobility patterns.
 
 ## Contextual Overview
 ```{r}
@@ -195,7 +207,11 @@ mvc_clean |>
   theme_minimal(base_size = 15)
 ```
 
+The contextual summaries highlight common factors and vehicle types involved in NYC collisions. “Unspecified” and “Driver Inattention/Distraction” are by far the most frequently reported contributing factors, underscoring the persistent challenge of distraction-related crashes. Other behaviors such as failing to yield, following too closely, and improper backing also appear prominently. In terms of vehicle type, sedans and sport utility vehicles account for the majority of crash-involved vehicles, reflecting their prevalence in the city’s vehicle fleet. The dominance of these categories suggests that both human behavior and common passenger vehicle types play central roles in collision dynamics across New York City.
+
 ## Additional Analysis
+To further explore the the collision in new york city, we use some heatmap to visualizes the spatial intensity of motor vehicle collisions across New York City. 
+
 ```{r}
 set.seed(123)
 
@@ -251,10 +267,93 @@ leaflet(mvc_sample2) |>
   )
 ```
 
+The heatmap reveals distinct collision hotspots in Manhattan—especially Midtown and Lower Manhattan—along with notable concentrations along major corridors in Brooklyn and Queens. In contrast, Staten Island and peripheral areas of the Bronx show relatively sparse collision activity. The point-level severity map reinforces these spatial trends: injury crashes are distributed widely across the city, whereas fatal crashes cluster more prominently along high-speed arterial roads rather than dense urban centers. These patterns suggest that both urban density and roadway design play important roles in shaping the frequency and severity of collisions in New York City.
 
+# Modeling
+We model collision severity using count-based injury outcomes. Because the number of persons injured is a non-negative count with many zeros, we compare a traditional linear regression model with a Poisson regression model, and evaluate which specification better fits the structure of the data.
+```{r include=FALSE}
+mvc_model <- mvc_clean |>
+  mutate(
+    hour = hour(crash_time),               # extract hour from hms
+    borough = as.factor(borough),
+    number_of_persons_killed = as.numeric(number_of_persons_killed)
+  ) |>
+  filter(!is.na(hour))
+```
+## linear regression
+```{r}
+lm_mod <- lm(
+  number_of_persons_injured ~ borough + hour + number_of_persons_killed,
+  data = mvc_model
+)
 
+tidy(lm_mod)
+```
 
+## Poisson Regresssion
+```{r}
+pois_mod <- glm(
+  number_of_persons_injured ~ borough + hour + number_of_persons_killed,
+  data = mvc_model,
+  family = poisson()
+)
 
+tidy(pois_mod, exponentiate = TRUE)
+```
 
+## model comparison
+```{r}
+bind_rows(
+  glance(lm_mod) |> mutate(model = "Linear"),
+  glance(pois_mod) |> mutate(model = "Poisson")
+)
+```
 
+Both the linear regression and Poisson regression models were fitted to explore predictors of injury counts in NYC motor vehicle collisions. Across both models, several consistent patterns emerge. First, the number of persons killed is a strong and statistically significant predictor of injury counts, reflecting that more severe crashes tend to involve both fatalities and a higher number of non-fatal injuries. The effect of hour of day is also substantial: each additional hour is associated with higher expected injury counts, with the Poisson model estimating approximately a 1.01–1.02 multiplicative increase per hour, consistent with elevated activity during the afternoon and evening periods.
+
+Spatial variation is notable across boroughs. In the linear model, Manhattan shows lower injury counts relative to the reference borough, while Staten Island and Brooklyn show slightly higher injury counts. The Poisson model produces similar directional effects, though with multiplicative interpretations: for example, crashes in Queens or Staten Island are associated with substantially higher expected injury counts, while Manhattan’s injury rate is significantly lower. These borough-level differences likely reflect differences in traffic volume, urban density, and roadway environments.
+
+When comparing overall model fit, the Poisson model is more appropriate for count data and displays substantially improved goodness-of-fit metrics relative to the linear model, including far higher log-likelihood and lower AIC/BIC values. This suggests that injury counts exhibit overdispersion and non-normality that are better captured through a count-based modeling framework. Together, these findings indicate that temporal, geographic, and crash-severity factors jointly shape the distribution of injuries in NYC collisions, and that Poisson regression provides a more suitable modeling approach for this outcome.
+
+## Residual Diagnostics
+```{r}
+mvc_model |>
+  add_residuals(lm_mod, var = "resid") |>
+  add_predictions(lm_mod, var = "pred") |>
+  ggplot(aes(x = pred, y = resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(
+    title = "Linear Model: Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal(base_size = 14)
+
+mvc_model |>
+  add_residuals(pois_mod, var = "resid") |>
+  add_predictions(pois_mod, var = "pred") |>
+  ggplot(aes(x = pred, y = resid)) +
+  geom_point(alpha = 0.3, color = "#2C93E8") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Poisson Model Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+Residual diagnostic plots reveal clear differences in model adequacy between the linear and Poisson regressions. The linear model shows strong heteroskedasticity, with residuals tightly clustered near zero for low fitted values but spreading widely as fitted values increase, indicating violation of constant variance and non-normal error assumptions. In contrast, the Poisson model exhibits a more stable residual pattern, with residuals remaining centered around zero and displaying variance patterns more consistent with count data. Although some dispersion remains, the Poisson model aligns substantially better with the underlying distribution of injuries, supporting its use as the preferred model for this outcome.
+
+# Discussion
+First, the temporal analyses consistently show strong daily and weekly patterns. Crashes peak during the morning and especially the evening commute, with Friday exhibiting the highest weekly counts. Late-night and early-morning hours display markedly lower activity. These results confirm that collision risk is closely aligned with predictable mobility cycles and traffic density.
+
+Secondly, the spatial analyses reveal substantial geographic variation across the five boroughs. Brooklyn and Queens experience the highest number of crashes, followed by Manhattan, while Staten Island records significantly fewer incidents. Heatmaps further demonstrate collision hotspots in dense commercial areas such as Midtown and Lower Manhattan, as well as along major arterial corridors in Brooklyn and Queens, highlighting the influence of urban density and roadway design on collision concentration.
+
+Third, our examination of collision severity indicates that most crashes involve property damage only, with injury crashes forming a smaller but meaningful portion of events. Fatal collisions are rare and tend to cluster along high-speed roadways rather than within dense urban centers. This distribution underscores that while crashes are frequent, severe outcomes remain relatively uncommon.
+
+Finally, our modeling work offers insight into which factors are associated with injury outcomes. Both the linear and Poisson models identify hour of day, borough, and the number of persons killed as significant predictors of injury counts. The Poisson model, which provides a superior fit for count data, demonstrates that injuries are more likely during high-traffic periods and in certain boroughs, while Manhattan consistently shows lower injury risk after adjusting for crash characteristics. These patterns reflect how contextual and environmental factors—such as traffic flow, population density, driver behavior, and roadway structure—interact to shape injury severity.
+
+Together, these findings paint a cohesive picture of collision dynamics in New York City: crashes are most common during peak travel times, concentrated in high-density regions, predominantly minor in severity, and influenced by a combination of temporal, spatial, and behavioral factors. By integrating exploratory visualization, spatial mapping, and statistical modeling, this project provides a comprehensive and evidence-based perspective on traffic safety across the city.
 
