@@ -552,21 +552,20 @@ affected?</li>
 <div id="data" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Data<a href="#data" class="anchor-section"
 aria-label="Anchor link to header"></a></h1>
-<p>The dataset used in this project is the Motor Vehicle Collisions –
-Crashes dataset available on NYC Open Data. This dataset contains
-detailed, police-reported information on every recorded motor vehicle
-collision in New York City, including the crash date and time, borough,
-geographic coordinates, the number of persons injured or killed,
-contributing factors, and the types of vehicles involved. The raw file
-consists of hundreds of thousands of observations with dozens of
-variables, providing a comprehensive city-wide view of collision events
-across the five boroughs. For our analysis, we cleaned and standardized
-the data by converting timestamps, extracting the hour of day,
-harmonizing categorical variables, and removing rows with missing or
-invalid entries such as unavailable borough or coordinates. These
-preprocessing steps produced a structured and consistent dataset
-suitable for exploring temporal and spatial patterns and for modeling
-environmental and contextual factors associated with collision
+<p>The primary dataset used in this project is the Motor Vehicle
+Collisions – Crashes dataset from NYC Open Data, which provides
+detailed, police-reported information for each crash, including date and
+time, borough, geographic coordinates, injury and fatality counts,
+contributing factors, and vehicle types. To provide context on traffic
+exposure, we also reference the NYC Automated Traffic Volume Counts
+dataset, which contains hourly vehicle counts collected by Department of
+Transportation roadway sensors. Together, these datasets allow us to
+examine collision patterns alongside roadway usage. For analysis, we
+cleaned and standardized the collision data by converting timestamps,
+extracting relevant temporal features, harmonizing categorical
+variables, and removing entries with missing boroughs or invalid
+coordinates, resulting in a structured dataset suitable for exploring
+spatial, temporal, and contextual factors related to collision
 severity.</p>
 </div>
 <div id="exploratory-analysis" class="section level1 hasAnchor">
@@ -908,10 +907,11 @@ class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">glance</span>(pois_mod) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;Poisson&quot;</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 15
-##   r.squared adj.r.squared  sigma statistic p.value    df   logLik    AIC    BIC deviance df.residual   nobs model null.deviance df.null
-##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;   &lt;int&gt;
-## 1   0.00570       0.00570  0.682     1435.       0     6  -1.55e6 3.11e6 3.11e6  697132.     1500928 1.50e6 Line…           NA       NA
-## 2  NA            NA       NA           NA       NA    NA  -1.11e6 2.22e6 2.22e6 1450162.     1500928 1.50e6 Pois…      1463501. 1500934</code></pre>
+##   r.squared adj.r.squared  sigma statistic p.value    df    logLik     AIC    BIC deviance df.residual   nobs model null.deviance
+##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;
+## 1   0.00570       0.00570  0.682     1435.       0     6 -1554224.  3.11e6 3.11e6  697132.     1500928 1.50e6 Line…           NA 
+## 2  NA            NA       NA           NA       NA    NA -1110034.  2.22e6 2.22e6 1450162.     1500928 1.50e6 Pois…      1463501.
+## # ℹ 1 more variable: df.null &lt;int&gt;</code></pre>
 <p>Both the linear regression and Poisson regression models were fitted
 to explore predictors of injury counts in NYC motor vehicle collisions.
 Across both models, several consistent patterns emerge. First, the
@@ -985,6 +985,24 @@ some dispersion remains, the Poisson model aligns substantially better
 with the underlying distribution of injuries, supporting its use as the
 preferred model for this outcome.</p>
 </div>
+</div>
+<div id="correlation" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Correlation<a href="#correlation"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We also conducted a correlation analysis and found that traffic
+volume has only a very weak linear association with crash counts in New
+York City. Citywide, the correlation between hourly traffic volume and
+collisions is approximately r ≈ 0.10, suggesting that higher-volume
+periods tend to experience slightly more crashes, but the relationship
+is minimal and explains very little of the variation in crash frequency.
+When examining boroughs individually, correlations remain weak across
+all areas—ranging from essentially no relationship in Staten Island (r ≈
+0.02) to slightly stronger but still weak associations in Queens, the
+Bronx, and Manhattan (generally r ≈ 0.07–0.16). These findings indicate
+that traffic volume alone is insufficient to explain spatial or temporal
+crash patterns, and that other factors—such as road design, intersection
+characteristics, and driver behavior—likely play a much more substantial
+role in shaping collision risk.</p>
 </div>
 <div id="discussion" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Discussion<a href="#discussion"

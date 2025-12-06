@@ -32,7 +32,7 @@ This website presents descriptive analyses, spatial mapping, and statistical mod
 
 ## Data Sources
 
-This project integrates **three major datasets**:
+This project integrates **two major datasets**:
 
 ### **1. NYC Motor Vehicle Collisions – Crashes (Primary Dataset)**  
 - **Publisher:** NYPD  

@@ -526,32 +526,32 @@ class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">glimpse</span>(mvc_model)</span></code></pre></div>
 <pre><code>## Rows: 1,978,256
 ## Columns: 26
-## $ crash_date                    &lt;date&gt; 2023-11-01, 2021-09-11, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-13…
-## $ crash_time                    &lt;time&gt; 01:29:00, 09:35:00, 08:13:00, 17:05:00, 08:17:00, 21:10:00, 14:58:00, 00:34:00, 16:50:00, 00:5…
-## $ borough                       &lt;fct&gt; BROOKLYN, BROOKLYN, BROOKLYN, NA, BRONX, BROOKLYN, MANHATTAN, NA, QUEENS, NA, QUEENS, BROOKLYN,…
-## $ zip_code                      &lt;dbl&gt; 11230, 11208, 11233, NA, 10475, 11207, 10017, NA, 11413, NA, 11434, 11217, 11226, 10463, NA, 10…
-## $ latitude                      &lt;dbl&gt; 40.62179, 40.66720, 40.68330, 40.70918, 40.86816, 40.67172, 40.75144, 40.70128, 40.67588, 40.59…
-## $ longitude                     &lt;dbl&gt; -73.97002, -73.86650, -73.91727, -73.95682, -73.83148, -73.89710, -73.97397, -73.88887, -73.755…
-## $ on_street_name                &lt;chr&gt; &quot;OCEAN PARKWAY&quot;, NA, &quot;SARATOGA AVENUE&quot;, &quot;BROOKLYN QUEENS EXPRESSWAY&quot;, NA, NA, &quot;3 AVENUE&quot;, &quot;MYRT…
-## $ cross_street_name             &lt;chr&gt; &quot;AVENUE K&quot;, NA, &quot;DECATUR STREET&quot;, NA, NA, NA, &quot;EAST 43 STREET&quot;, NA, &quot;EAST GATE PLAZA&quot;, NA, &quot;150…
-## $ number_of_persons_injured     &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0,…
-## $ number_of_persons_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,…
-## $ number_of_pedestrians_injured &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-## $ number_of_pedestrians_killed  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,…
-## $ number_of_cyclist_injured     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,…
-## $ number_of_cyclist_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-## $ number_of_motorist_injured    &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0,…
-## $ number_of_motorist_killed     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-## $ contributing_factor_vehicle_1 &lt;chr&gt; &quot;Unspecified&quot;, &quot;Unspecified&quot;, NA, &quot;Passing Too Closely&quot;, &quot;Unspecified&quot;, &quot;Driver Inexperience&quot;, …
-## $ contributing_factor_vehicle_2 &lt;chr&gt; &quot;Unspecified&quot;, NA, NA, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified…
-## $ collision_id                  &lt;dbl&gt; 4675373, 4456314, 4486609, 4486555, 4486660, 4487074, 4486519, 4486934, 4487127, 4486564, 44866…
-## $ vehicle_type_code_1           &lt;chr&gt; &quot;Moped&quot;, &quot;Sedan&quot;, NA, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Station Wagon/Sport Utility Vehicle&quot;…
-## $ vehicle_type_code_2           &lt;chr&gt; &quot;Sedan&quot;, NA, NA, &quot;Tractor Truck Diesel&quot;, &quot;Sedan&quot;, NA, &quot;Station Wagon/Sport Utility Vehicle&quot;, NA…
-## $ crash_year                    &lt;dbl&gt; 2023, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021,…
-## $ crash_month                   &lt;date&gt; 2023-11-01, 2021-09-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01…
-## $ any_injury                    &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, FA…
-## $ any_death                     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…
-## $ hour                          &lt;int&gt; 1, 9, 8, 17, 8, 21, 14, 0, 16, 0, 23, 17, 20, 19, 14, 4, 5, 6, 3, 17, 17, 20, 12, 17, 22, 9, 16…</code></pre>
+## $ crash_date                    &lt;date&gt; 2023-11-01, 2021-09-11, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-14, 2021…
+## $ crash_time                    &lt;time&gt; 01:29:00, 09:35:00, 08:13:00, 17:05:00, 08:17:00, 21:10:00, 14:58:00, 00:34:00, 16:50:00…
+## $ borough                       &lt;fct&gt; BROOKLYN, BROOKLYN, BROOKLYN, NA, BRONX, BROOKLYN, MANHATTAN, NA, QUEENS, NA, QUEENS, BRO…
+## $ zip_code                      &lt;dbl&gt; 11230, 11208, 11233, NA, 10475, 11207, 10017, NA, 11413, NA, 11434, 11217, 11226, 10463, …
+## $ latitude                      &lt;dbl&gt; 40.62179, 40.66720, 40.68330, 40.70918, 40.86816, 40.67172, 40.75144, 40.70128, 40.67588,…
+## $ longitude                     &lt;dbl&gt; -73.97002, -73.86650, -73.91727, -73.95682, -73.83148, -73.89710, -73.97397, -73.88887, -…
+## $ on_street_name                &lt;chr&gt; &quot;OCEAN PARKWAY&quot;, NA, &quot;SARATOGA AVENUE&quot;, &quot;BROOKLYN QUEENS EXPRESSWAY&quot;, NA, NA, &quot;3 AVENUE&quot;,…
+## $ cross_street_name             &lt;chr&gt; &quot;AVENUE K&quot;, NA, &quot;DECATUR STREET&quot;, NA, NA, NA, &quot;EAST 43 STREET&quot;, NA, &quot;EAST GATE PLAZA&quot;, NA…
+## $ number_of_persons_injured     &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0,…
+## $ number_of_persons_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,…
+## $ number_of_pedestrians_injured &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ number_of_pedestrians_killed  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,…
+## $ number_of_cyclist_injured     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,…
+## $ number_of_cyclist_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ number_of_motorist_injured    &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ number_of_motorist_killed     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ contributing_factor_vehicle_1 &lt;chr&gt; &quot;Unspecified&quot;, &quot;Unspecified&quot;, NA, &quot;Passing Too Closely&quot;, &quot;Unspecified&quot;, &quot;Driver Inexperie…
+## $ contributing_factor_vehicle_2 &lt;chr&gt; &quot;Unspecified&quot;, NA, NA, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspe…
+## $ collision_id                  &lt;dbl&gt; 4675373, 4456314, 4486609, 4486555, 4486660, 4487074, 4486519, 4486934, 4487127, 4486564,…
+## $ vehicle_type_code_1           &lt;chr&gt; &quot;Moped&quot;, &quot;Sedan&quot;, NA, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Station Wagon/Sport Utility Ve…
+## $ vehicle_type_code_2           &lt;chr&gt; &quot;Sedan&quot;, NA, NA, &quot;Tractor Truck Diesel&quot;, &quot;Sedan&quot;, NA, &quot;Station Wagon/Sport Utility Vehicl…
+## $ crash_year                    &lt;dbl&gt; 2023, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021,…
+## $ crash_month                   &lt;date&gt; 2023-11-01, 2021-09-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021…
+## $ any_injury                    &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, TR…
+## $ any_death                     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE…
+## $ hour                          &lt;int&gt; 1, 9, 8, 17, 8, 21, 14, 0, 16, 0, 23, 17, 20, 19, 14, 4, 5, 6, 3, 17, 17, 20, 12, 17, 22,…</code></pre>
 <hr />
 </div>
 <div id="baseline-linear-regression" class="section level1 hasAnchor">
@@ -636,30 +636,71 @@ class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">glance</span>(pois_mod) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;Poisson&quot;</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 15
-##   r.squared adj.r.squared  sigma statistic p.value    df   logLik    AIC    BIC deviance df.residual   nobs model null.deviance df.null
-##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;   &lt;int&gt;
-## 1   0.00570       0.00570  0.682     1435.       0     6  -1.55e6 3.11e6 3.11e6  697132.     1500928 1.50e6 Line…           NA       NA
-## 2  NA            NA       NA           NA       NA    NA  -1.11e6 2.22e6 2.22e6 1450162.     1500928 1.50e6 Pois…      1463501. 1500934</code></pre>
+##   r.squared adj.r.squared  sigma statistic p.value    df    logLik     AIC    BIC deviance df.residual   nobs model null.deviance
+##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;
+## 1   0.00570       0.00570  0.682     1435.       0     6 -1554224.  3.11e6 3.11e6  697132.     1500928 1.50e6 Line…           NA 
+## 2  NA            NA       NA           NA       NA    NA -1110034.  2.22e6 2.22e6 1450162.     1500928 1.50e6 Pois…      1463501.
+## # ℹ 1 more variable: df.null &lt;int&gt;</code></pre>
+</div>
+<div id="residual-diagnostics" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Residual Diagnostics<a
+href="#residual-diagnostics" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div id="linear-model" class="section level3 hasAnchor">
+<h3 class="hasAnchor">Linear Model<a href="#linear-model"
+class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>mvc_model <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">add_residuals</span>(lm_mod, <span class="at">var =</span> <span class="st">&quot;resid&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">add_predictions</span>(lm_mod, <span class="at">var =</span> <span class="st">&quot;pred&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> resid)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Linear Model: Residuals vs Fitted&quot;</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Fitted Values&quot;</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="modeling_files/figure-html/lm-resid-1.png" width="672" /></p>
 <hr />
+</div>
+<div id="poisson-model" class="section level3 hasAnchor">
+<h3 class="hasAnchor">Poisson Model<a href="#poisson-model"
+class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>mvc_model <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">add_residuals</span>(pois_mod, <span class="at">var =</span> <span class="st">&quot;resid&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">add_predictions</span>(pois_mod, <span class="at">var =</span> <span class="st">&quot;pred&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> resid)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Poisson Model Residuals vs Fitted&quot;</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Fitted Values&quot;</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="modeling_files/figure-html/poisson-resid-1.png" width="672" /></p>
+<hr />
+</div>
 </div>
 <div id="death-reason" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Death reason<a href="#death-reason"
 class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>We first calculated the proportion of fatal accidents occurring in
 different boroughs.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>mvc_death <span class="ot">&lt;-</span> mvc_model <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">death =</span> <span class="fu">as.integer</span>(number_of_persons_killed <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>death_by_borough <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="fu">group_by</span>(borough) <span class="sc">|&gt;</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>    <span class="at">n          =</span> <span class="fu">n</span>(),                       </span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>    <span class="at">deaths     =</span> <span class="fu">sum</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>    <span class="at">death_rate =</span> <span class="fu">mean</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(death_rate))</span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>death_by_borough</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>mvc_death <span class="ot">&lt;-</span> mvc_model <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">death =</span> <span class="fu">as.integer</span>(number_of_persons_killed <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>death_by_borough <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="fu">group_by</span>(borough) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    <span class="at">n          =</span> <span class="fu">n</span>(),                       </span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>    <span class="at">deaths     =</span> <span class="fu">sum</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    <span class="at">death_rate =</span> <span class="fu">mean</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(death_rate))</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>death_by_borough</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
 ##   borough            n deaths death_rate
 ##   &lt;fct&gt;          &lt;int&gt;  &lt;int&gt;      &lt;dbl&gt;
@@ -669,17 +710,17 @@ different boroughs.</p>
 ## 4 BRONX         220897    297    0.00134
 ## 5 QUEENS        403603    540    0.00134
 ## 6 MANHATTAN     330944    349    0.00105</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>death_by_vehicle <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">group_by</span>(vehicle_type_code_1) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    <span class="at">n          =</span> <span class="fu">n</span>(),</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="at">deaths     =</span> <span class="fu">sum</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    <span class="at">death_rate =</span> <span class="fu">mean</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(death_rate))</span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>death_by_vehicle</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>death_by_vehicle <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">group_by</span>(vehicle_type_code_1) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="at">n          =</span> <span class="fu">n</span>(),</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="at">deaths     =</span> <span class="fu">sum</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="at">death_rate =</span> <span class="fu">mean</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(death_rate))</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>death_by_vehicle</span></code></pre></div>
 <pre><code>## # A tibble: 141 × 4
 ##    vehicle_type_code_1     n deaths death_rate
 ##    &lt;chr&gt;               &lt;int&gt;  &lt;int&gt;      &lt;dbl&gt;
@@ -694,17 +735,17 @@ different boroughs.</p>
 ##  9 Motorbike             535      9     0.0168
 ## 10 Concrete Mixer        475      7     0.0147
 ## # ℹ 131 more rows</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>death_by_factor <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">group_by</span>(contributing_factor_vehicle_1) <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="at">n          =</span> <span class="fu">n</span>(),</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="at">deaths     =</span> <span class="fu">sum</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="at">death_rate =</span> <span class="fu">mean</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(death_rate))</span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>death_by_factor</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>death_by_factor <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="fu">group_by</span>(contributing_factor_vehicle_1) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>    <span class="at">n          =</span> <span class="fu">n</span>(),</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>    <span class="at">deaths     =</span> <span class="fu">sum</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>    <span class="at">death_rate =</span> <span class="fu">mean</span>(death, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(death_rate))</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>death_by_factor</span></code></pre></div>
 <pre><code>## # A tibble: 61 × 4
 ##    contributing_factor_vehicle_1                             n deaths death_rate
 ##    &lt;chr&gt;                                                 &lt;int&gt;  &lt;int&gt;      &lt;dbl&gt;
@@ -719,47 +760,7 @@ different boroughs.</p>
 ##  9 Passenger Distraction                                  7863     42    0.00534
 ## 10 Tow Hitch Defective                                     214      1    0.00467
 ## # ℹ 51 more rows</code></pre>
-</div>
-<div id="residual-diagnostics" class="section level1 hasAnchor">
-<h1 class="hasAnchor">Residual Diagnostics<a
-href="#residual-diagnostics" class="anchor-section"
-aria-label="Anchor link to header"></a></h1>
-<div id="linear-model" class="section level3 hasAnchor">
-<h3 class="hasAnchor">Linear Model<a href="#linear-model"
-class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>mvc_model <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="fu">add_residuals</span>(lm_mod, <span class="at">var =</span> <span class="st">&quot;resid&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="fu">add_predictions</span>(lm_mod, <span class="at">var =</span> <span class="st">&quot;pred&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> resid)) <span class="sc">+</span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Linear Model: Residuals vs Fitted&quot;</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Fitted Values&quot;</span>,</span>
-<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span></span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="modeling_files/figure-html/lm-resid-1.png" width="672" /></p>
 <hr />
-</div>
-<div id="poisson-model" class="section level3 hasAnchor">
-<h3 class="hasAnchor">Poisson Model<a href="#poisson-model"
-class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>mvc_model <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">add_residuals</span>(pois_mod, <span class="at">var =</span> <span class="st">&quot;resid&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="fu">add_predictions</span>(pois_mod, <span class="at">var =</span> <span class="st">&quot;pred&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> resid)) <span class="sc">+</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Poisson Model Residuals vs Fitted&quot;</span>,</span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Fitted Values&quot;</span>,</span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span></span>
-<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
-<p><img src="modeling_files/figure-html/poisson-resid-1.png" width="672" /></p>
-<hr />
-</div>
 </div>
 <div id="summary-of-findings" class="section level1 hasAnchor">
 <h1 class="hasAnchor">Summary of Findings<a href="#summary-of-findings"
