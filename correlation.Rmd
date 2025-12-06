@@ -1,0 +1,105 @@
+---
+title: "Correlation with other datasets"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+
+library(tidyverse)
+library(broom)
+library(modelr)
+library(lubridate)
+```
+
+```{r import dataset}
+volume <- read.csv("Automated_Traffic_Volume_Counts_20251205.csv")
+glimpse(volume)
+mvc_clean <- read_csv("mvc_clean.csv", show_col_types = FALSE)
+mvc_model <- mvc_clean |>
+  mutate(
+    hour = hour(crash_time),               # extract hour from hms
+    borough = as.factor(borough),
+    number_of_persons_killed = as.numeric(number_of_persons_killed)
+  ) |>
+  filter(!is.na(hour))
+glimpse(mvc_model)
+```
+
+```{r hourly crash and volume}
+mvc_hourly <-
+mvc_model |>
+transmute(
+Boro = toupper(as.character(borough)),                      # matchup with volumn
+Yr   = year(crash_date),
+M    = month(crash_date),
+D    = day(crash_date),
+HH   = hour
+) |>
+count(Boro, Yr, M, D, HH, name = "crash_count")
+
+glimpse(mvc_hourly)
+
+vol_hourly <-
+volume |>
+mutate(
+  Vol = as.numeric(Vol),
+  Boro = toupper(Boro)
+  ) |>
+group_by(Boro, Yr, M, D, HH) |>
+summarise(
+total_vol = sum(Vol, na.rm = TRUE),
+.groups = "drop"
+)
+
+glimpse(vol_hourly)
+
+mvc_vol <-
+inner_join(
+mvc_hourly,
+vol_hourly,
+by = c("Boro", "Yr", "M", "D", "HH")
+)
+
+glimpse(mvc_vol)
+
+set.seed(123)
+
+mvc_vol_sample <- mvc_vol |>
+  slice_sample(n = min(5000, nrow(mvc_vol)))
+```
+
+```{r correlation analyis}
+cor_overall <- cor(
+mvc_vol$crash_count,
+mvc_vol$total_vol,
+use = "complete.obs",
+method = "pearson"
+)
+
+cor_overall
+
+cor_by_boro <- mvc_vol |>
+group_by(Boro) |>
+summarise(
+cor_vol_crash = cor(
+crash_count,
+total_vol,
+use    = "complete.obs",
+method = "pearson"
+),
+n = n()
+)
+
+cor_by_boro
+```
+
+Based solely on the Pearson correlation coefficients between total traffic volume (total_vol) and crash counts (crash_count), we find only weak positive linear associations. City-wide, the overall correlation is about r = 0.10, indicating that higher-volume locations or time periods tend to have slightly more crashes, but the effect is very small. The corresponding r^2 suggests that a simple linear relationship with volume can explain only around 1% of the variation in crash counts.
+
+When examining each borough separately, the correlations remain small across the board: from r ≈ 0.02 in Staten Island (essentially no linear relationship) to r ≈ 0.16 in Queens (still weak but somewhat stronger than in other boroughs). Bronx and Manhattan show weak positive correlations (r ≈ 0.12–0.13), while Brooklyn exhibits an even weaker linear association (r ≈ 0.07). Overall, these results indicate that, in our dataset, traffic volume alone is far from sufficient to account for the spatial–temporal variation in crash counts, and other factors beyond volume must play a major role.
+
+This weak correlation is not surprising, because crashes are rare events and are affected by many additional factors (e.g., road geometry, intersection density, speed patterns, time of day), so it is unlikely that a single variable such as traffic volume would show a strong linear relationship with crash counts at this level of aggregation.
