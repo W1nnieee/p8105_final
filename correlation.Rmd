@@ -17,9 +17,9 @@ library(lubridate)
 ```
 
 ```{r import dataset}
-volume <- read.csv("Automated_Traffic_Volume_Counts_20251205.csv")
+volume <- read.csv("E:/Desktop/Automated_Traffic_Volume_Counts_20251206.csv")
 glimpse(volume)
-mvc_clean <- read_csv("mvc_clean.csv", show_col_types = FALSE)
+mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 mvc_model <- mvc_clean |>
   mutate(
     hour = hour(crash_time),               # extract hour from hms

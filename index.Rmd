@@ -6,8 +6,7 @@ output: html_document
 ## Exploring patterns, trends, and risk factors in NYC crashes
 
 **Collaborators**  
-- Daniel Jiao (dj2764)  
-- Yuyang Wang (yw4660)  
+- Daniel Jiao (dj2764)  - Yuyang Wang (yw4660)
 - Xinyu Wang (xw3106)
 - Haoyi Tan (ht2717)
 
@@ -31,29 +30,51 @@ This website presents descriptive analyses, spatial mapping, and statistical mod
 
 ---
 
-## Data Source
+## Data Sources
 
-This project uses the following dataset:
+This project integrates **three major datasets**:
 
-- **Dataset:** Motor Vehicle Collisions – Crashes  
-- **Publisher:** New York City Police Department (NYPD)  
+### **1. NYC Motor Vehicle Collisions – Crashes (Primary Dataset)**  
+- **Publisher:** NYPD  
 - **Source:** NYC Open Data  
-- **Link:** https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95
-
-Each row corresponds to a single crash and includes date, time, location, injuries, fatalities, vehicle types, and contributing factors.
-
-More details are provided on the **About / Data** page.
+- **Link:** https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95  
+- **Description:**  
+  Each row represents a crash and includes:
+  - date and time  
+  - location (borough, longitude, latitude)  
+  - injuries & fatalities  
+  - contributing factors  
+  - vehicle types  
 
 ---
 
+### **2. NYC Traffic Volume (Supplementary Dataset)**  
+- **Source:** NYC Open Data
+- **Link:** https://data.cityofnewyork.us/Transportation/Automated-Traffic-Volume-Counts/7ym2-wayt/about_data
+- **Description:**  
+  Hourly traffic counts from NYC Department of Transportation traffic sensors.  
+  These data help contextualize collision rates by describing **exposure**, i.e., periods of heavier or lighter road usage.
+
+Examples of variables include:
+- Sensor ID  
+- Borough  
+- Hourly vehicle counts  
+- Roadway type  
+
+This dataset is used to explore whether **higher traffic volume** corresponds to increased collision frequency.
+
+---
+
+
 ## Research Questions
 
-We focus on the following questions:
+Bringing together collision, traffic, and weather data allows us to answer the following questions:
 
 1. **When** do collisions most frequently occur?  
-2. **Where** do collisions occur, and which boroughs are most affected?  
-3. **How severe** are collisions?  
-4. **Which factors** are associated with injuries?
+2. **Where** do crashes occur, and which boroughs exhibit the highest risk?  
+3. **How severe** are collisions, and how do injury patterns vary across NYC?  
+4. **To what**  extent do environmental factors—such as weather and traffic volume—affect collision frequency or injury risk? 
+5. **Which** contributing factors (e.g., driver behavior, road conditions) are most strongly associated with injuries?
 
 ---
 
@@ -64,13 +85,12 @@ We focus on the following questions:
 - **Exploratory Analyses → Overview** – Basic summaries  
 - **Exploratory Analyses → Time Trends** – Temporal patterns  
 - **Mapping** – Collision locations in NYC  
-- **Modeling** – Statistical models  
-- **Conclusions** – Key findings  
+- **Modeling** – Statistical models
+- **Correlation** – Impacts of weather and traffic volume 
 - **Project Report** – Full report  
-- **References** – Citations
 
 ---
 
 ## Acknowledgements
 
-This project is completed as part of the P8105 Data Science course.
+This project is completed as part of **P8105: Data Science** at the Columbia University Mailman School of Public Health.

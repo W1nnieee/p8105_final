@@ -15,7 +15,7 @@ library(broom)
 library(modelr)
 library(lubridate)
 
-mvc_clean <- read_csv("mvc_clean.csv", show_col_types = FALSE)
+mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
 
 # Modeling Collision Severity

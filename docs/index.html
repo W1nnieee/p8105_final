@@ -377,9 +377,8 @@ NYC crashes<a
 href="#exploring-patterns-trends-and-risk-factors-in-nyc-crashes"
 class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Collaborators</strong><br />
-- Daniel Jiao (dj2764)<br />
-- Yuyang Wang (yw4660)<br />
-- Xinyu Wang (xw3106) - Haoyi Tan (ht2717)</p>
+- Daniel Jiao (dj2764) - Yuyang Wang (yw4660) - Xinyu Wang (xw3106) -
+Haoyi Tan (ht2717)</p>
 <hr />
 </div>
 <div id="overview" class="section level2 hasAnchor">
@@ -403,42 +402,86 @@ risk factors across the five boroughs.</p>
 <p><img src="images/traffic.jpeg" /></p>
 <hr />
 </div>
-<div id="data-source" class="section level2 hasAnchor">
-<h2 class="hasAnchor">Data Source<a href="#data-source"
+<div id="data-sources" class="section level2 hasAnchor">
+<h2 class="hasAnchor">Data Sources<a href="#data-sources"
 class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This project uses the following dataset:</p>
+<p>This project integrates <strong>three major datasets</strong>:</p>
+<div id="nyc-motor-vehicle-collisions-crashes-primary-dataset"
+class="section level3 hasAnchor">
+<h3 class="hasAnchor"><strong>1. NYC Motor Vehicle Collisions – Crashes
+(Primary Dataset)</strong><a
+href="#nyc-motor-vehicle-collisions-crashes-primary-dataset"
+class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><strong>Dataset:</strong> Motor Vehicle Collisions – Crashes<br />
-</li>
-<li><strong>Publisher:</strong> New York City Police Department
-(NYPD)<br />
+<li><strong>Publisher:</strong> NYPD<br />
 </li>
 <li><strong>Source:</strong> NYC Open Data<br />
 </li>
 <li><strong>Link:</strong> <a
 href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95"
-class="uri">https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95</a></li>
+class="uri">https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95</a><br />
+</li>
+<li><strong>Description:</strong><br />
+Each row represents a crash and includes:
+<ul>
+<li>date and time<br />
+</li>
+<li>location (borough, longitude, latitude)<br />
+</li>
+<li>injuries &amp; fatalities<br />
+</li>
+<li>contributing factors<br />
+</li>
+<li>vehicle types</li>
+</ul></li>
 </ul>
-<p>Each row corresponds to a single crash and includes date, time,
-location, injuries, fatalities, vehicle types, and contributing
-factors.</p>
-<p>More details are provided on the <strong>About / Data</strong>
-page.</p>
 <hr />
+</div>
+<div id="nyc-traffic-volume-supplementary-dataset"
+class="section level3 hasAnchor">
+<h3 class="hasAnchor"><strong>2. NYC Traffic Volume (Supplementary
+Dataset)</strong><a href="#nyc-traffic-volume-supplementary-dataset"
+class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Source:</strong> NYC Open Data</li>
+<li><strong>Link:</strong> <a
+href="https://data.cityofnewyork.us/Transportation/Automated-Traffic-Volume-Counts/7ym2-wayt/about_data"
+class="uri">https://data.cityofnewyork.us/Transportation/Automated-Traffic-Volume-Counts/7ym2-wayt/about_data</a></li>
+<li><strong>Description:</strong><br />
+Hourly traffic counts from NYC Department of Transportation traffic
+sensors.<br />
+These data help contextualize collision rates by describing
+<strong>exposure</strong>, i.e., periods of heavier or lighter road
+usage.</li>
+</ul>
+<p>Examples of variables include: - Sensor ID<br />
+- Borough<br />
+- Hourly vehicle counts<br />
+- Roadway type</p>
+<p>This dataset is used to explore whether <strong>higher traffic
+volume</strong> corresponds to increased collision frequency.</p>
+<hr />
+</div>
 </div>
 <div id="research-questions" class="section level2 hasAnchor">
 <h2 class="hasAnchor">Research Questions<a href="#research-questions"
 class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We focus on the following questions:</p>
+<p>Bringing together collision, traffic, and weather data allows us to
+answer the following questions:</p>
 <ol style="list-style-type: decimal">
 <li><strong>When</strong> do collisions most frequently occur?<br />
 </li>
-<li><strong>Where</strong> do collisions occur, and which boroughs are
-most affected?<br />
+<li><strong>Where</strong> do crashes occur, and which boroughs exhibit
+the highest risk?<br />
 </li>
-<li><strong>How severe</strong> are collisions?<br />
+<li><strong>How severe</strong> are collisions, and how do injury
+patterns vary across NYC?<br />
 </li>
-<li><strong>Which factors</strong> are associated with injuries?</li>
+<li><strong>To what</strong> extent do environmental factors—such as
+weather and traffic volume—affect collision frequency or injury
+risk?</li>
+<li><strong>Which</strong> contributing factors (e.g., driver behavior,
+road conditions) are most strongly associated with injuries?</li>
 </ol>
 <hr />
 </div>
@@ -458,21 +501,19 @@ patterns<br />
 </li>
 <li><strong>Mapping</strong> – Collision locations in NYC<br />
 </li>
-<li><strong>Modeling</strong> – Statistical models<br />
-</li>
-<li><strong>Conclusions</strong> – Key findings<br />
-</li>
-<li><strong>Project Report</strong> – Full report<br />
-</li>
-<li><strong>References</strong> – Citations</li>
+<li><strong>Modeling</strong> – Statistical models</li>
+<li><strong>Correlation</strong> – Impacts of weather and traffic
+volume</li>
+<li><strong>Project Report</strong> – Full report</li>
 </ul>
 <hr />
 </div>
 <div id="acknowledgements" class="section level2 hasAnchor">
 <h2 class="hasAnchor">Acknowledgements<a href="#acknowledgements"
 class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This project is completed as part of the P8105 Data Science
-course.</p>
+<p>This project is completed as part of <strong>P8105: Data
+Science</strong> at the Columbia University Mailman School of Public
+Health.</p>
 </div>
 
 

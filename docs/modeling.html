@@ -13,7 +13,7 @@
 
 <title>Modeling: Statistical Analysis of Collision Severity</title>
 
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <link href="site_libs/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet" />
@@ -52,9 +52,8 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -65,7 +64,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -446,12 +445,15 @@ div.tocify {
   <a href="modeling.html">Modeling</a>
 </li>
 <li>
+  <a href="correlation.html">Correlation</a>
+</li>
+<li>
   <a href="report.html">Project Report</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/YOURUSER/yourrepo">
+  <a href="https://github.com/W1nnieee/p8105_final">
     <span class="fa fa-github"></span>
      
   </a>
@@ -522,34 +524,34 @@ class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hour))</span></code></pre></div>
 <p>Check dataset:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">glimpse</span>(mvc_model)</span></code></pre></div>
-<pre><code>## Rows: 1,978,026
+<pre><code>## Rows: 1,978,256
 ## Columns: 26
-## $ crash_date                    &lt;date&gt; 2023-11-01, 2021-09-11, 2021-12-14, 202…
-## $ crash_time                    &lt;time&gt; 01:29:00, 09:35:00, 08:13:00, 17:05:00,…
-## $ borough                       &lt;fct&gt; BROOKLYN, BROOKLYN, BROOKLYN, NA, BRONX,…
-## $ zip_code                      &lt;dbl&gt; 11230, 11208, 11233, NA, 10475, 11207, 1…
-## $ latitude                      &lt;dbl&gt; 40.62179, 40.66720, 40.68330, 40.70918, …
-## $ longitude                     &lt;dbl&gt; -73.97002, -73.86650, -73.91727, -73.956…
-## $ on_street_name                &lt;chr&gt; &quot;OCEAN PARKWAY&quot;, NA, &quot;SARATOGA AVENUE&quot;, …
-## $ cross_street_name             &lt;chr&gt; &quot;AVENUE K&quot;, NA, &quot;DECATUR STREET&quot;, NA, NA…
-## $ number_of_persons_injured     &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1…
-## $ number_of_persons_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ number_of_pedestrians_injured &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ number_of_pedestrians_killed  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ number_of_cyclist_injured     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ number_of_cyclist_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ number_of_motorist_injured    &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1…
-## $ number_of_motorist_killed     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ contributing_factor_vehicle_1 &lt;chr&gt; &quot;Unspecified&quot;, &quot;Unspecified&quot;, NA, &quot;Passi…
-## $ contributing_factor_vehicle_2 &lt;chr&gt; &quot;Unspecified&quot;, NA, NA, &quot;Unspecified&quot;, &quot;U…
-## $ collision_id                  &lt;dbl&gt; 4675373, 4456314, 4486609, 4486555, 4486…
-## $ vehicle_type_code_1           &lt;chr&gt; &quot;Moped&quot;, &quot;Sedan&quot;, NA, &quot;Sedan&quot;, &quot;Sedan&quot;, …
-## $ vehicle_type_code_2           &lt;chr&gt; &quot;Sedan&quot;, NA, NA, &quot;Tractor Truck Diesel&quot;,…
-## $ crash_year                    &lt;dbl&gt; 2023, 2021, 2021, 2021, 2021, 2021, 2021…
-## $ crash_month                   &lt;date&gt; 2023-11-01, 2021-09-01, 2021-12-01, 202…
-## $ any_injury                    &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, …
-## $ any_death                     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE…
-## $ hour                          &lt;int&gt; 1, 9, 8, 17, 8, 21, 14, 0, 16, 0, 23, 17…</code></pre>
+## $ crash_date                    &lt;date&gt; 2023-11-01, 2021-09-11, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-14, 2021-12-13…
+## $ crash_time                    &lt;time&gt; 01:29:00, 09:35:00, 08:13:00, 17:05:00, 08:17:00, 21:10:00, 14:58:00, 00:34:00, 16:50:00, 00:5…
+## $ borough                       &lt;fct&gt; BROOKLYN, BROOKLYN, BROOKLYN, NA, BRONX, BROOKLYN, MANHATTAN, NA, QUEENS, NA, QUEENS, BROOKLYN,…
+## $ zip_code                      &lt;dbl&gt; 11230, 11208, 11233, NA, 10475, 11207, 10017, NA, 11413, NA, 11434, 11217, 11226, 10463, NA, 10…
+## $ latitude                      &lt;dbl&gt; 40.62179, 40.66720, 40.68330, 40.70918, 40.86816, 40.67172, 40.75144, 40.70128, 40.67588, 40.59…
+## $ longitude                     &lt;dbl&gt; -73.97002, -73.86650, -73.91727, -73.95682, -73.83148, -73.89710, -73.97397, -73.88887, -73.755…
+## $ on_street_name                &lt;chr&gt; &quot;OCEAN PARKWAY&quot;, NA, &quot;SARATOGA AVENUE&quot;, &quot;BROOKLYN QUEENS EXPRESSWAY&quot;, NA, NA, &quot;3 AVENUE&quot;, &quot;MYRT…
+## $ cross_street_name             &lt;chr&gt; &quot;AVENUE K&quot;, NA, &quot;DECATUR STREET&quot;, NA, NA, NA, &quot;EAST 43 STREET&quot;, NA, &quot;EAST GATE PLAZA&quot;, NA, &quot;150…
+## $ number_of_persons_injured     &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0,…
+## $ number_of_persons_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,…
+## $ number_of_pedestrians_injured &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ number_of_pedestrians_killed  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,…
+## $ number_of_cyclist_injured     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,…
+## $ number_of_cyclist_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ number_of_motorist_injured    &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0,…
+## $ number_of_motorist_killed     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ contributing_factor_vehicle_1 &lt;chr&gt; &quot;Unspecified&quot;, &quot;Unspecified&quot;, NA, &quot;Passing Too Closely&quot;, &quot;Unspecified&quot;, &quot;Driver Inexperience&quot;, …
+## $ contributing_factor_vehicle_2 &lt;chr&gt; &quot;Unspecified&quot;, NA, NA, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified&quot;, &quot;Unspecified…
+## $ collision_id                  &lt;dbl&gt; 4675373, 4456314, 4486609, 4486555, 4486660, 4487074, 4486519, 4486934, 4487127, 4486564, 44866…
+## $ vehicle_type_code_1           &lt;chr&gt; &quot;Moped&quot;, &quot;Sedan&quot;, NA, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Sedan&quot;, &quot;Station Wagon/Sport Utility Vehicle&quot;…
+## $ vehicle_type_code_2           &lt;chr&gt; &quot;Sedan&quot;, NA, NA, &quot;Tractor Truck Diesel&quot;, &quot;Sedan&quot;, NA, &quot;Station Wagon/Sport Utility Vehicle&quot;, NA…
+## $ crash_year                    &lt;dbl&gt; 2023, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021, 2021,…
+## $ crash_month                   &lt;date&gt; 2023-11-01, 2021-09-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01, 2021-12-01…
+## $ any_injury                    &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, FA…
+## $ any_death                     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…
+## $ hour                          &lt;int&gt; 1, 9, 8, 17, 8, 21, 14, 0, 16, 0, 23, 17, 20, 19, 14, 4, 5, 6, 3, 17, 17, 20, 12, 17, 22, 9, 16…</code></pre>
 <hr />
 </div>
 <div id="baseline-linear-regression" class="section level1 hasAnchor">
@@ -566,12 +568,12 @@ aria-label="Anchor link to header"></a></h1>
 ##   term                     estimate std.error statistic   p.value
 ##   &lt;chr&gt;                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 (Intercept)               0.304   0.00193      157.   0        
-## 2 boroughBROOKLYN           0.00269 0.00175        1.53 1.25e-  1
+## 2 boroughBROOKLYN           0.00272 0.00175        1.55 1.21e-  1
 ## 3 boroughMANHATTAN         -0.119   0.00187      -63.6  0        
-## 4 boroughQUEENS            -0.0293  0.00180      -16.3  1.60e- 59
-## 5 boroughSTATEN ISLAND     -0.0465  0.00308      -15.1  1.66e- 51
-## 6 hour                      0.00325 0.0000973     33.4  3.00e-244
-## 7 number_of_persons_killed  0.262   0.0143        18.3  4.56e- 75</code></pre>
+## 4 boroughQUEENS            -0.0293  0.00180      -16.3  1.92e- 59
+## 5 boroughSTATEN ISLAND     -0.0466  0.00308      -15.1  1.40e- 51
+## 6 hour                      0.00325 0.0000973     33.4  5.20e-244
+## 7 number_of_persons_killed  0.262   0.0143        18.3  6.61e- 75</code></pre>
 <hr />
 </div>
 <div id="interpretation-of-linear-model"
@@ -604,12 +606,12 @@ class="anchor-section" aria-label="Anchor link to header"></a></h1>
 ##   term                     estimate std.error statistic   p.value
 ##   &lt;chr&gt;                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 (Intercept)                 0.301  0.00503    -238.   0        
-## 2 boroughBROOKLYN             1.01   0.00435       1.74 8.15e-  2
+## 2 boroughBROOKLYN             1.01   0.00435       1.76 7.80e-  2
 ## 3 boroughMANHATTAN            0.657  0.00513     -82.0  0        
-## 4 boroughQUEENS               0.915  0.00456     -19.4  1.81e- 83
-## 5 boroughSTATEN ISLAND        0.866  0.00811     -17.7  4.22e- 70
+## 4 boroughQUEENS               0.916  0.00456     -19.3  2.35e- 83
+## 5 boroughSTATEN ISLAND        0.866  0.00811     -17.7  3.31e- 70
 ## 6 hour                        1.01   0.000259     40.7  0        
-## 7 number_of_persons_killed    1.65   0.0212       23.6  1.12e-122</code></pre>
+## 7 number_of_persons_killed    1.65   0.0212       23.5  2.27e-122</code></pre>
 <hr />
 </div>
 <div id="interpretation-of-poisson-model"
@@ -634,12 +636,10 @@ class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">glance</span>(pois_mod) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;Poisson&quot;</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 15
-##   r.squared adj.r.squared  sigma statistic p.value    df    logLik    AIC    BIC
-##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1   0.00570       0.00570  0.681     1435.       0     6 -1553916. 3.11e6 3.11e6
-## 2  NA            NA       NA           NA       NA    NA -1109779. 2.22e6 2.22e6
-## # ℹ 6 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;,
-## #   model &lt;chr&gt;, null.deviance &lt;dbl&gt;, df.null &lt;int&gt;</code></pre>
+##   r.squared adj.r.squared  sigma statistic p.value    df   logLik    AIC    BIC deviance df.residual   nobs model null.deviance df.null
+##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;   &lt;int&gt;
+## 1   0.00570       0.00570  0.682     1435.       0     6  -1.55e6 3.11e6 3.11e6  697132.     1500928 1.50e6 Line…           NA       NA
+## 2  NA            NA       NA           NA       NA    NA  -1.11e6 2.22e6 2.22e6 1450162.     1500928 1.50e6 Pois…      1463501. 1500934</code></pre>
 <hr />
 </div>
 <div id="death-reason" class="section level1 hasAnchor">
@@ -663,12 +663,12 @@ different boroughs.</p>
 <pre><code>## # A tibble: 6 × 4
 ##   borough            n deaths death_rate
 ##   &lt;fct&gt;          &lt;int&gt;  &lt;int&gt;      &lt;dbl&gt;
-## 1 &lt;NA&gt;          477280    984    0.00206
-## 2 STATEN ISLAND  62769    100    0.00159
-## 3 BROOKLYN      482650    676    0.00140
-## 4 BRONX         220873    296    0.00134
-## 5 QUEENS        403549    540    0.00134
-## 6 MANHATTAN     330905    349    0.00105</code></pre>
+## 1 &lt;NA&gt;          477321    984    0.00206
+## 2 STATEN ISLAND  62775    100    0.00159
+## 3 BROOKLYN      482716    676    0.00140
+## 4 BRONX         220897    297    0.00134
+## 5 QUEENS        403603    540    0.00134
+## 6 MANHATTAN     330944    349    0.00105</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>death_by_vehicle <span class="ot">&lt;-</span> mvc_death <span class="sc">|&gt;</span></span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">group_by</span>(vehicle_type_code_1) <span class="sc">|&gt;</span></span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
@@ -687,7 +687,7 @@ different boroughs.</p>
 ##  2 Minibike               40      2     0.05  
 ##  3 PEDICAB                24      1     0.0417
 ##  4 FORKL                  30      1     0.0333
-##  5 Motorcycle           8944    223     0.0249
+##  5 Motorcycle           8949    223     0.0249
 ##  6 Trailer                41      1     0.0244
 ##  7 Motorscooter          795     17     0.0214
 ##  8 MOTORCYCLE           3605     66     0.0183
@@ -710,13 +710,13 @@ different boroughs.</p>
 ##    &lt;chr&gt;                                                 &lt;int&gt;  &lt;int&gt;      &lt;dbl&gt;
 ##  1 Illnes                                                 1759     50    0.0284 
 ##  2 Tinted Windows                                          188      3    0.0160 
-##  3 Unsafe Speed                                          30996    345    0.0111 
-##  4 Pedestrian/Bicyclist/Other Pedestrian Error/Confusion 10782     97    0.00900
+##  3 Unsafe Speed                                          31004    345    0.0111 
+##  4 Pedestrian/Bicyclist/Other Pedestrian Error/Confusion 10783     97    0.00900
 ##  5 Drugs (illegal)                                         893      8    0.00896
 ##  6 Drugs (Illegal)                                         366      3    0.00820
-##  7 Traffic Control Disregarded                           36654    245    0.00668
+##  7 Traffic Control Disregarded                           36662    245    0.00668
 ##  8 Other Lighting Defects                                  182      1    0.00549
-##  9 Passenger Distraction                                  7861     42    0.00534
+##  9 Passenger Distraction                                  7863     42    0.00534
 ## 10 Tow Hitch Defective                                     214      1    0.00467
 ## # ℹ 51 more rows</code></pre>
 </div>

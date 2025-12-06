@@ -14,7 +14,7 @@ library(tidyverse)
 library(lubridate)
 library(viridis)
 library(scales)
-mvc_clean <- read_csv("data/mvc_clean.csv", show_col_types = FALSE)
+mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 
 ```
 

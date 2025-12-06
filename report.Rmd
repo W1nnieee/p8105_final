@@ -22,7 +22,7 @@ library(modelr)
 
 
 
-mvc_clean <- read_csv("/Users/winniew/Desktop/final1/mvc_clean.csv", show_col_types = FALSE)
+mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
 
 # Motivation
