@@ -13,7 +13,198 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(broom)
 library(modelr)
-mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
+library(lubridate)
+
+mvc_clean <- read_csv("mvc_clean.csv", show_col_types = FALSE)
 ```
 
+# Modeling Collision Severity
+
+This section investigates which factors are associated with the **number of persons injured** in a collision.  
+We compare:
+
+- **Linear regression**  
+- **Poisson regression** (more appropriate for counts)
+
+---
+
+# Data Used
+
+We use:
+
+- **borough** – location category  
+- **hour** – extracted from crash_time  
+- **number_of_persons_injured** – outcome  
+- **number_of_persons_killed** – control  
+
+---
+
+# Preprocessing
+
+Convert hour correctly:
+
+```{r preprocess}
+mvc_model <- mvc_clean |>
+  mutate(
+    hour = hour(crash_time),               # extract hour from hms
+    borough = as.factor(borough),
+    number_of_persons_killed = as.numeric(number_of_persons_killed)
+  ) |>
+  filter(!is.na(hour))
+```
+
+Check dataset:
+
+```{r check}
+glimpse(mvc_model)
+```
+
+---
+
+# Baseline Linear Regression
+
+```{r linear-mod}
+lm_mod <- lm(
+  number_of_persons_injured ~ borough + hour + number_of_persons_killed,
+  data = mvc_model
+)
+
+tidy(lm_mod)
+```
+
+---
+
+# Interpretation of Linear Model
+
+- Positive coefficients → higher expected injury count  
+- Borough effects show geographic variation  
+- Hour suggests time-of-day risk patterns  
+
+Linear regression is simple but **not ideal** since the outcome is a non-negative count with many zeros.
+
+---
+
+# Poisson Regression
+
+```{r poisson-mod}
+pois_mod <- glm(
+  number_of_persons_injured ~ borough + hour + number_of_persons_killed,
+  data = mvc_model,
+  family = poisson()
+)
+
+tidy(pois_mod, exponentiate = TRUE)
+```
+
+---
+
+# Interpretation of Poisson Model
+
+Exponentiated coefficients are **rate ratios**:
+
+- **> 1** → predictor increases injury incidence  
+- **< 1** → predictor decreases injury incidence  
+
+This model is more appropriate than linear regression.
+
+---
+
+# Model Comparison
+
+```{r model-compare}
+bind_rows(
+  glance(lm_mod) |> mutate(model = "Linear"),
+  glance(pois_mod) |> mutate(model = "Poisson")
+)
+```
+
+---
+
+# Prediction
+
+We are interested in whether there's death in collision using logistic regression
+
+```{r logistic regression}
+set.seed(123)
+# use a small dataset to do regression
+mvc_logit <- mvc_model |>
+  sample_n(5000)  
+
+logit_mod <- glm(
+  I(number_of_persons_killed > 0) ~ borough + vehicle_type_code_1 + contributing_factor_vehicle_1,
+  data   = mvc_logit,
+  family = binomial()
+)
+
+summary(logit_mod)
+
+library(broom)
+
+logit_or <- tidy(logit_mod, exponentiate = TRUE, conf.int = TRUE)
+
+logit_or |>
+  filter(term != "(Intercept)") |>
+  ggplot(aes(x = reorder(term, estimate), y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.1) +
+  coord_flip() +
+  labs(
+    title = "Logistic Model: Odds Ratios for Fatal Collision",
+    x = "Predictor",
+    y = "Odds Ratio (95% CI)"
+  ) +
+  theme_minimal(base_size = 14)
+
+```
+
+
+# Residual Diagnostics
+
+### Linear Model
+
+```{r lm-resid}
+mvc_model |>
+  add_residuals(lm_mod, var = "resid") |>
+  add_predictions(lm_mod, var = "pred") |>
+  ggplot(aes(x = pred, y = resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(
+    title = "Linear Model: Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal(base_size = 14)
+
+```
+
+---
+
+### Poisson Model
+
+```{r poisson-resid}
+mvc_model |>
+  add_residuals(pois_mod, var = "resid") |>
+  add_predictions(pois_mod, var = "pred") |>
+  ggplot(aes(x = pred, y = resid)) +
+  geom_point(alpha = 0.3, color = "#2C93E8") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Poisson Model Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+# Summary of Findings
+
+- Geography strongly influences injury severity  
+- Time of day significantly impacts injury risk  
+- Fatal collisions correspond to far higher injury counts  
+- Poisson regression is better suited for this outcome than linear regression  
+
+Extensions could include negative binomial regression, zero-inflated models, and interaction terms.
 

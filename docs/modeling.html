@@ -13,7 +13,7 @@
 
 <title>Modeling: Statistical Analysis of Collision Severity</title>
 
-<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <link href="site_libs/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet" />
@@ -43,6 +43,117 @@
 
 
 
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -335,7 +446,7 @@ div.tocify {
   <a href="modeling.html">Modeling</a>
 </li>
 <li>
-  <a href="conclusions.html">Conclusions</a>
+  <a href="report.html">Project Report</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -368,7 +479,748 @@ Severity</h1>
 </div>
 
 
-
+<div id="modeling-collision-severity" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Modeling Collision Severity<a
+href="#modeling-collision-severity" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<p>This section investigates which factors are associated with the
+<strong>number of persons injured</strong> in a collision.<br />
+We compare:</p>
+<ul>
+<li><strong>Linear regression</strong><br />
+</li>
+<li><strong>Poisson regression</strong> (more appropriate for
+counts)</li>
+</ul>
+<hr />
+</div>
+<div id="data-used" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Data Used<a href="#data-used"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We use:</p>
+<ul>
+<li><strong>borough</strong> – location category<br />
+</li>
+<li><strong>hour</strong> – extracted from crash_time<br />
+</li>
+<li><strong>number_of_persons_injured</strong> – outcome<br />
+</li>
+<li><strong>number_of_persons_killed</strong> – control</li>
+</ul>
+<hr />
+</div>
+<div id="preprocessing" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Preprocessing<a href="#preprocessing"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Convert hour correctly:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>mvc_model <span class="ot">&lt;-</span> mvc_clean <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">hour</span>(crash_time),               <span class="co"># extract hour from hms</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="at">borough =</span> <span class="fu">as.factor</span>(borough),</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="at">number_of_persons_killed =</span> <span class="fu">as.numeric</span>(number_of_persons_killed)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hour))</span></code></pre></div>
+<p>Check dataset:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">glimpse</span>(mvc_model)</span></code></pre></div>
+<pre><code>## Rows: 1,978,026
+## Columns: 26
+## $ crash_date                    &lt;date&gt; 2023-11-01, 2021-09-11, 2021-12-14, 202…
+## $ crash_time                    &lt;time&gt; 01:29:00, 09:35:00, 08:13:00, 17:05:00,…
+## $ borough                       &lt;fct&gt; BROOKLYN, BROOKLYN, BROOKLYN, NA, BRONX,…
+## $ zip_code                      &lt;dbl&gt; 11230, 11208, 11233, NA, 10475, 11207, 1…
+## $ latitude                      &lt;dbl&gt; 40.62179, 40.66720, 40.68330, 40.70918, …
+## $ longitude                     &lt;dbl&gt; -73.97002, -73.86650, -73.91727, -73.956…
+## $ on_street_name                &lt;chr&gt; &quot;OCEAN PARKWAY&quot;, NA, &quot;SARATOGA AVENUE&quot;, …
+## $ cross_street_name             &lt;chr&gt; &quot;AVENUE K&quot;, NA, &quot;DECATUR STREET&quot;, NA, NA…
+## $ number_of_persons_injured     &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1…
+## $ number_of_persons_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ number_of_pedestrians_injured &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ number_of_pedestrians_killed  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ number_of_cyclist_injured     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ number_of_cyclist_killed      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ number_of_motorist_injured    &lt;dbl&gt; 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 4, 1…
+## $ number_of_motorist_killed     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ contributing_factor_vehicle_1 &lt;chr&gt; &quot;Unspecified&quot;, &quot;Unspecified&quot;, NA, &quot;Passi…
+## $ contributing_factor_vehicle_2 &lt;chr&gt; &quot;Unspecified&quot;, NA, NA, &quot;Unspecified&quot;, &quot;U…
+## $ collision_id                  &lt;dbl&gt; 4675373, 4456314, 4486609, 4486555, 4486…
+## $ vehicle_type_code_1           &lt;chr&gt; &quot;Moped&quot;, &quot;Sedan&quot;, NA, &quot;Sedan&quot;, &quot;Sedan&quot;, …
+## $ vehicle_type_code_2           &lt;chr&gt; &quot;Sedan&quot;, NA, NA, &quot;Tractor Truck Diesel&quot;,…
+## $ crash_year                    &lt;dbl&gt; 2023, 2021, 2021, 2021, 2021, 2021, 2021…
+## $ crash_month                   &lt;date&gt; 2023-11-01, 2021-09-01, 2021-12-01, 202…
+## $ any_injury                    &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, …
+## $ any_death                     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE…
+## $ hour                          &lt;int&gt; 1, 9, 8, 17, 8, 21, 14, 0, 16, 0, 23, 17…</code></pre>
+<hr />
+</div>
+<div id="baseline-linear-regression" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Baseline Linear Regression<a
+href="#baseline-linear-regression" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>lm_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  number_of_persons_injured <span class="sc">~</span> borough <span class="sc">+</span> hour <span class="sc">+</span> number_of_persons_killed,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">data =</span> mvc_model</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">tidy</span>(lm_mod)</span></code></pre></div>
+<pre><code>## # A tibble: 7 × 5
+##   term                     estimate std.error statistic   p.value
+##   &lt;chr&gt;                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)               0.304   0.00193      157.   0        
+## 2 boroughBROOKLYN           0.00269 0.00175        1.53 1.25e-  1
+## 3 boroughMANHATTAN         -0.119   0.00187      -63.6  0        
+## 4 boroughQUEENS            -0.0293  0.00180      -16.3  1.60e- 59
+## 5 boroughSTATEN ISLAND     -0.0465  0.00308      -15.1  1.66e- 51
+## 6 hour                      0.00325 0.0000973     33.4  3.00e-244
+## 7 number_of_persons_killed  0.262   0.0143        18.3  4.56e- 75</code></pre>
+<hr />
+</div>
+<div id="interpretation-of-linear-model"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">Interpretation of Linear Model<a
+href="#interpretation-of-linear-model" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<ul>
+<li>Positive coefficients → higher expected injury count<br />
+</li>
+<li>Borough effects show geographic variation<br />
+</li>
+<li>Hour suggests time-of-day risk patterns</li>
+</ul>
+<p>Linear regression is simple but <strong>not ideal</strong> since the
+outcome is a non-negative count with many zeros.</p>
+<hr />
+</div>
+<div id="poisson-regression" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Poisson Regression<a href="#poisson-regression"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>pois_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  number_of_persons_injured <span class="sc">~</span> borough <span class="sc">+</span> hour <span class="sc">+</span> number_of_persons_killed,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">data =</span> mvc_model,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="fu">tidy</span>(pois_mod, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 7 × 5
+##   term                     estimate std.error statistic   p.value
+##   &lt;chr&gt;                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                 0.301  0.00503    -238.   0        
+## 2 boroughBROOKLYN             1.01   0.00435       1.74 8.15e-  2
+## 3 boroughMANHATTAN            0.657  0.00513     -82.0  0        
+## 4 boroughQUEENS               0.915  0.00456     -19.4  1.81e- 83
+## 5 boroughSTATEN ISLAND        0.866  0.00811     -17.7  4.22e- 70
+## 6 hour                        1.01   0.000259     40.7  0        
+## 7 number_of_persons_killed    1.65   0.0212       23.6  1.12e-122</code></pre>
+<hr />
+</div>
+<div id="interpretation-of-poisson-model"
+class="section level1 hasAnchor">
+<h1 class="hasAnchor">Interpretation of Poisson Model<a
+href="#interpretation-of-poisson-model" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<p>Exponentiated coefficients are <strong>rate ratios</strong>:</p>
+<ul>
+<li><strong>&gt; 1</strong> → predictor increases injury incidence<br />
+</li>
+<li><strong>&lt; 1</strong> → predictor decreases injury incidence</li>
+</ul>
+<p>This model is more appropriate than linear regression.</p>
+<hr />
+</div>
+<div id="model-comparison" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Model Comparison<a href="#model-comparison"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">glance</span>(lm_mod) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;Linear&quot;</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">glance</span>(pois_mod) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;Poisson&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 15
+##   r.squared adj.r.squared  sigma statistic p.value    df    logLik    AIC    BIC
+##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1   0.00570       0.00570  0.681     1435.       0     6 -1553916. 3.11e6 3.11e6
+## 2  NA            NA       NA           NA       NA    NA -1109779. 2.22e6 2.22e6
+## # ℹ 6 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;,
+## #   model &lt;chr&gt;, null.deviance &lt;dbl&gt;, df.null &lt;int&gt;</code></pre>
+<hr />
+</div>
+<div id="prediction" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Prediction<a href="#prediction"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We are interested in whether there’s death in collision using
+logistic regression</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># use a small dataset to do regression</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>mvc_logit <span class="ot">&lt;-</span> mvc_model <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">5000</span>)  </span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>logit_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="fu">I</span>(number_of_persons_killed <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">~</span> borough <span class="sc">+</span> vehicle_type_code_1 <span class="sc">+</span> contributing_factor_vehicle_1,</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="at">data   =</span> mvc_logit,</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>)</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="fu">summary</span>(logit_mod)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = I(number_of_persons_killed &gt; 0) ~ borough + vehicle_type_code_1 + 
+##     contributing_factor_vehicle_1, family = binomial(), data = mvc_logit)
+## 
+## Coefficients:
+##                                                                                      Estimate
+## (Intercept)                                                                        -1.093e+02
+## boroughBROOKLYN                                                                     1.229e+00
+## boroughMANHATTAN                                                                    1.263e+00
+## boroughQUEENS                                                                       3.925e+01
+## boroughSTATEN ISLAND                                                                4.063e+01
+## vehicle_type_code_14 dr sedan                                                      -3.213e+01
+## vehicle_type_code_1AMBU                                                             3.956e+01
+## vehicle_type_code_1Ambul                                                            3.634e+01
+## vehicle_type_code_1Ambulance                                                        3.834e+01
+## vehicle_type_code_1AMBULANCE                                                        3.751e+01
+## vehicle_type_code_1Beverage Truck                                                   3.978e+01
+## vehicle_type_code_1BICYCLE                                                          3.704e+01
+## vehicle_type_code_1Bike                                                             5.725e-01
+## vehicle_type_code_1Box T                                                            1.767e+00
+## vehicle_type_code_1Box Truck                                                        1.633e+00
+## vehicle_type_code_1Bulk Agriculture                                                 3.975e+01
+## vehicle_type_code_1Bus                                                              4.350e+01
+## vehicle_type_code_1BUS                                                              1.290e-01
+## vehicle_type_code_1Carry All                                                        2.168e-01
+## vehicle_type_code_1Chassis Cab                                                      8.171e+01
+## vehicle_type_code_1COM                                                              7.432e+01
+## vehicle_type_code_1Convertible                                                      6.903e+00
+## vehicle_type_code_1COURIER                                                          3.634e+01
+## vehicle_type_code_1Dump                                                             3.902e+00
+## vehicle_type_code_1E-Bike                                                           2.005e+00
+## vehicle_type_code_1E-Scooter                                                        3.690e+01
+## vehicle_type_code_1fire                                                             3.975e+01
+## vehicle_type_code_1Fire                                                             1.767e+00
+## vehicle_type_code_1Fire truck                                                       3.684e+01
+## vehicle_type_code_1Fire Truck                                                      -1.181e+00
+## vehicle_type_code_1FIRE TRUCK                                                      -6.220e-01
+## vehicle_type_code_1Flat Bed                                                        -3.593e+01
+## vehicle_type_code_1Flat Rack                                                        3.680e+01
+## vehicle_type_code_1Garbage or Refuse                                               -5.980e-01
+## vehicle_type_code_1GARBAGE TR                                                       3.684e+01
+## vehicle_type_code_1Golf Cart                                                        3.581e+01
+## vehicle_type_code_1LARGE COM VEH(6 OR MORE TIRES)                                   4.069e+00
+## vehicle_type_code_1LIVERY VEHICLE                                                   2.698e+00
+## vehicle_type_code_1Moped                                                           -1.793e+00
+## vehicle_type_code_1Motorbike                                                        3.703e+01
+## vehicle_type_code_1Motorcycle                                                       8.340e-01
+## vehicle_type_code_1MOTORCYCLE                                                       3.918e-01
+## vehicle_type_code_1Motorscooter                                                     3.564e+01
+## vehicle_type_code_1Multi-Wheeled Vehicle                                            3.807e+01
+## vehicle_type_code_1Open Body                                                       -1.559e+00
+## vehicle_type_code_1OTHER                                                            1.093e+00
+## vehicle_type_code_1Pallet                                                           3.793e+01
+## vehicle_type_code_1PAS                                                              3.790e+01
+## vehicle_type_code_1PASSENGER VEHICLE                                                2.218e-01
+## vehicle_type_code_1Pedicab                                                          3.564e+01
+## vehicle_type_code_1Pick-up Truck                                                   -3.319e+01
+## vehicle_type_code_1PICK-UP TRUCK                                                    7.382e-01
+## vehicle_type_code_1Pickup                                                           3.684e+01
+## vehicle_type_code_1PK                                                               7.558e+01
+## vehicle_type_code_1Sedan                                                           -3.111e+01
+## vehicle_type_code_1SMALL COM VEH(4 TIRES)                                           2.308e+00
+## vehicle_type_code_1SPORT UTILITY / STATION WAGON                                    3.400e-01
+## vehicle_type_code_1Standing S                                                       3.684e+01
+## vehicle_type_code_1Station Wagon/Sport Utility Vehicle                              4.159e-01
+## vehicle_type_code_1Taxi                                                             1.482e+00
+## vehicle_type_code_1TAXI                                                             3.683e+00
+## vehicle_type_code_1Tow Truck / Wrecker                                              3.222e+00
+## vehicle_type_code_1Tractor Truck Diesel                                            -4.973e-01
+## vehicle_type_code_1Tractor Truck Gasoline                                           3.701e+01
+## vehicle_type_code_1TRAIL                                                            3.634e+01
+## vehicle_type_code_1TRUCK                                                            3.813e+01
+## vehicle_type_code_1UNKNOWN                                                          4.597e-01
+## vehicle_type_code_1van                                                              3.813e+01
+## vehicle_type_code_1Van                                                              4.577e+00
+## vehicle_type_code_1VAN                                                              1.281e+00
+## contributing_factor_vehicle_1Aggressive Driving/Road Rage                           4.506e+01
+## contributing_factor_vehicle_1Alcohol Involvement                                    4.422e+01
+## contributing_factor_vehicle_1Animals Action                                         1.479e+00
+## contributing_factor_vehicle_1Backing Unsafely                                       4.336e+01
+## contributing_factor_vehicle_1Brakes Defective                                       4.390e+01
+## contributing_factor_vehicle_1Cell Phone (hand-held)                                 4.328e+01
+## contributing_factor_vehicle_1Cell Phone (hand-Held)                                 1.126e+02
+## contributing_factor_vehicle_1Driver Inattention/Distraction                         7.169e+00
+## contributing_factor_vehicle_1Driver Inexperience                                    4.356e+01
+## contributing_factor_vehicle_1Driverless/Runaway Vehicle                             8.158e+01
+## contributing_factor_vehicle_1Drugs (illegal)                                        7.324e+01
+## contributing_factor_vehicle_1Drugs (Illegal)                                        8.130e+01
+## contributing_factor_vehicle_1Failure to Keep Right                                  4.593e+01
+## contributing_factor_vehicle_1Failure to Yield Right-of-Way                          4.362e+01
+## contributing_factor_vehicle_1Fatigued/Drowsy                                        4.477e+01
+## contributing_factor_vehicle_1Fell Asleep                                            4.424e+01
+## contributing_factor_vehicle_1Following Too Closely                                  4.225e+01
+## contributing_factor_vehicle_1Glare                                                  4.359e+01
+## contributing_factor_vehicle_1Illnes                                                 4.436e+01
+## contributing_factor_vehicle_1Illness                                                4.613e+01
+## contributing_factor_vehicle_1Lane Marking Improper/Inadequate                       8.233e+01
+## contributing_factor_vehicle_1Lost Consciousness                                     4.453e+01
+## contributing_factor_vehicle_1Obstruction/Debris                                     7.476e+01
+## contributing_factor_vehicle_1Other Electronic Device                                8.170e+01
+## contributing_factor_vehicle_1Other Vehicular                                        4.253e+01
+## contributing_factor_vehicle_1Outside Car Distraction                                4.396e+01
+## contributing_factor_vehicle_1Oversized Vehicle                                      4.193e+01
+## contributing_factor_vehicle_1Passenger Distraction                                  4.558e+01
+## contributing_factor_vehicle_1Passing or Lane Usage Improper                         4.682e+01
+## contributing_factor_vehicle_1Passing Too Closely                                    4.174e+01
+## contributing_factor_vehicle_1Pavement Defective                                     8.171e+01
+## contributing_factor_vehicle_1Pavement Slippery                                      4.177e+00
+## contributing_factor_vehicle_1Pedestrian/Bicyclist/Other Pedestrian Error/Confusion  4.174e+01
+## contributing_factor_vehicle_1Physical Disability                                    4.358e+01
+## contributing_factor_vehicle_1Prescription Medication                                4.470e+01
+## contributing_factor_vehicle_1Reaction to Other Uninvolved Vehicle                   4.310e+01
+## contributing_factor_vehicle_1Reaction to Uninvolved Vehicle                         4.156e+01
+## contributing_factor_vehicle_1Steering Failure                                       4.568e+01
+## contributing_factor_vehicle_1Tire Failure/Inadequate                                4.459e+01
+## contributing_factor_vehicle_1Traffic Control Device Improper/Non-Working            4.418e+01
+## contributing_factor_vehicle_1Traffic Control Disregarded                            4.516e+01
+## contributing_factor_vehicle_1Turning Improperly                                     4.306e+01
+## contributing_factor_vehicle_1Unsafe Lane Changing                                   4.589e+01
+## contributing_factor_vehicle_1Unsafe Speed                                           8.037e+01
+## contributing_factor_vehicle_1Unspecified                                            4.469e+01
+## contributing_factor_vehicle_1View Obstructed/Limited                                4.506e+01
+## contributing_factor_vehicle_1Windshield Inadequate                                  1.126e+02
+##                                                                                    Std. Error
+## (Intercept)                                                                         3.815e+05
+## boroughBROOKLYN                                                                     1.510e+04
+## boroughMANHATTAN                                                                    1.661e+04
+## boroughQUEENS                                                                       1.475e+04
+## boroughSTATEN ISLAND                                                                1.721e+04
+## vehicle_type_code_14 dr sedan                                                       1.402e+05
+## vehicle_type_code_1AMBU                                                             3.868e+05
+## vehicle_type_code_1Ambul                                                            3.812e+05
+## vehicle_type_code_1Ambulance                                                        1.778e+05
+## vehicle_type_code_1AMBULANCE                                                        2.150e+05
+## vehicle_type_code_1Beverage Truck                                                   3.821e+05
+## vehicle_type_code_1BICYCLE                                                          2.848e+05
+## vehicle_type_code_1Bike                                                             1.450e+05
+## vehicle_type_code_1Box T                                                            3.820e+05
+## vehicle_type_code_1Box Truck                                                        1.426e+05
+## vehicle_type_code_1Bulk Agriculture                                                 3.821e+05
+## vehicle_type_code_1Bus                                                              1.357e+05
+## vehicle_type_code_1BUS                                                              1.452e+05
+## vehicle_type_code_1Carry All                                                        2.205e+05
+## vehicle_type_code_1Chassis Cab                                                      1.371e+05
+## vehicle_type_code_1COM                                                              3.814e+05
+## vehicle_type_code_1Convertible                                                      1.358e+05
+## vehicle_type_code_1COURIER                                                          3.812e+05
+## vehicle_type_code_1Dump                                                             1.634e+05
+## vehicle_type_code_1E-Bike                                                           2.658e+05
+## vehicle_type_code_1E-Scooter                                                        1.703e+05
+## vehicle_type_code_1fire                                                             3.821e+05
+## vehicle_type_code_1Fire                                                             3.820e+05
+## vehicle_type_code_1Fire truck                                                       3.812e+05
+## vehicle_type_code_1Fire Truck                                                       3.811e+05
+## vehicle_type_code_1FIRE TRUCK                                                       2.338e+05
+## vehicle_type_code_1Flat Bed                                                         1.761e+05
+## vehicle_type_code_1Flat Rack                                                        3.812e+05
+## vehicle_type_code_1Garbage or Refuse                                                2.658e+05
+## vehicle_type_code_1GARBAGE TR                                                       3.812e+05
+## vehicle_type_code_1Golf Cart                                                        3.962e+05
+## vehicle_type_code_1LARGE COM VEH(6 OR MORE TIRES)                                   1.448e+05
+## vehicle_type_code_1LIVERY VEHICLE                                                   1.440e+05
+## vehicle_type_code_1Moped                                                            2.152e+05
+## vehicle_type_code_1Motorbike                                                        2.375e+05
+## vehicle_type_code_1Motorcycle                                                       1.490e+05
+## vehicle_type_code_1MOTORCYCLE                                                       1.646e+05
+## vehicle_type_code_1Motorscooter                                                     3.831e+05
+## vehicle_type_code_1Multi-Wheeled Vehicle                                            3.814e+05
+## vehicle_type_code_1Open Body                                                        3.869e+05
+## vehicle_type_code_1OTHER                                                            1.418e+05
+## vehicle_type_code_1Pallet                                                           3.831e+05
+## vehicle_type_code_1PAS                                                              3.815e+05
+## vehicle_type_code_1PASSENGER VEHICLE                                                1.362e+05
+## vehicle_type_code_1Pedicab                                                          3.831e+05
+## vehicle_type_code_1Pick-up Truck                                                    1.388e+05
+## vehicle_type_code_1PICK-UP TRUCK                                                    1.468e+05
+## vehicle_type_code_1Pickup                                                           3.812e+05
+## vehicle_type_code_1PK                                                               3.815e+05
+## vehicle_type_code_1Sedan                                                            1.361e+05
+## vehicle_type_code_1SMALL COM VEH(4 TIRES)                                           1.426e+05
+## vehicle_type_code_1SPORT UTILITY / STATION WAGON                                    1.366e+05
+## vehicle_type_code_1Standing S                                                       3.812e+05
+## vehicle_type_code_1Station Wagon/Sport Utility Vehicle                              1.364e+05
+## vehicle_type_code_1Taxi                                                             1.388e+05
+## vehicle_type_code_1TAXI                                                             1.381e+05
+## vehicle_type_code_1Tow Truck / Wrecker                                              2.705e+05
+## vehicle_type_code_1Tractor Truck Diesel                                             1.610e+05
+## vehicle_type_code_1Tractor Truck Gasoline                                           2.752e+05
+## vehicle_type_code_1TRAIL                                                            3.812e+05
+## vehicle_type_code_1TRUCK                                                            3.819e+05
+## vehicle_type_code_1UNKNOWN                                                          1.424e+05
+## vehicle_type_code_1van                                                              3.819e+05
+## vehicle_type_code_1Van                                                              1.469e+05
+## vehicle_type_code_1VAN                                                              1.407e+05
+## contributing_factor_vehicle_1Aggressive Driving/Road Rage                           3.623e+05
+## contributing_factor_vehicle_1Alcohol Involvement                                    3.582e+05
+## contributing_factor_vehicle_1Animals Action                                         3.946e+05
+## contributing_factor_vehicle_1Backing Unsafely                                       3.569e+05
+## contributing_factor_vehicle_1Brakes Defective                                       3.720e+05
+## contributing_factor_vehicle_1Cell Phone (hand-held)                                 5.038e+05
+## contributing_factor_vehicle_1Cell Phone (hand-Held)                                 5.039e+05
+## contributing_factor_vehicle_1Driver Inattention/Distraction                         3.563e+05
+## contributing_factor_vehicle_1Driver Inexperience                                    3.582e+05
+## contributing_factor_vehicle_1Driverless/Runaway Vehicle                             4.335e+05
+## contributing_factor_vehicle_1Drugs (illegal)                                        5.039e+05
+## contributing_factor_vehicle_1Drugs (Illegal)                                        5.039e+05
+## contributing_factor_vehicle_1Failure to Keep Right                                  3.685e+05
+## contributing_factor_vehicle_1Failure to Yield Right-of-Way                          3.566e+05
+## contributing_factor_vehicle_1Fatigued/Drowsy                                        3.578e+05
+## contributing_factor_vehicle_1Fell Asleep                                            3.748e+05
+## contributing_factor_vehicle_1Following Too Closely                                  3.574e+05
+## contributing_factor_vehicle_1Glare                                                  3.745e+05
+## contributing_factor_vehicle_1Illnes                                                 3.807e+05
+## contributing_factor_vehicle_1Illness                                                3.666e+05
+## contributing_factor_vehicle_1Lane Marking Improper/Inadequate                       5.040e+05
+## contributing_factor_vehicle_1Lost Consciousness                                     3.593e+05
+## contributing_factor_vehicle_1Obstruction/Debris                                     3.905e+05
+## contributing_factor_vehicle_1Other Electronic Device                                3.812e+05
+## contributing_factor_vehicle_1Other Vehicular                                        3.569e+05
+## contributing_factor_vehicle_1Outside Car Distraction                                3.609e+05
+## contributing_factor_vehicle_1Oversized Vehicle                                      3.621e+05
+## contributing_factor_vehicle_1Passenger Distraction                                  3.618e+05
+## contributing_factor_vehicle_1Passing or Lane Usage Improper                         3.565e+05
+## contributing_factor_vehicle_1Passing Too Closely                                    3.572e+05
+## contributing_factor_vehicle_1Pavement Defective                                     4.029e+05
+## contributing_factor_vehicle_1Pavement Slippery                                      3.588e+05
+## contributing_factor_vehicle_1Pedestrian/Bicyclist/Other Pedestrian Error/Confusion  3.603e+05
+## contributing_factor_vehicle_1Physical Disability                                    3.637e+05
+## contributing_factor_vehicle_1Prescription Medication                                3.606e+05
+## contributing_factor_vehicle_1Reaction to Other Uninvolved Vehicle                   3.843e+05
+## contributing_factor_vehicle_1Reaction to Uninvolved Vehicle                         3.610e+05
+## contributing_factor_vehicle_1Steering Failure                                       3.722e+05
+## contributing_factor_vehicle_1Tire Failure/Inadequate                                3.940e+05
+## contributing_factor_vehicle_1Traffic Control Device Improper/Non-Working            3.877e+05
+## contributing_factor_vehicle_1Traffic Control Disregarded                            3.577e+05
+## contributing_factor_vehicle_1Turning Improperly                                     3.572e+05
+## contributing_factor_vehicle_1Unsafe Lane Changing                                   3.583e+05
+## contributing_factor_vehicle_1Unsafe Speed                                           3.564e+05
+## contributing_factor_vehicle_1Unspecified                                            3.562e+05
+## contributing_factor_vehicle_1View Obstructed/Limited                                3.610e+05
+## contributing_factor_vehicle_1Windshield Inadequate                                  5.039e+05
+##                                                                                    z value
+## (Intercept)                                                                          0.000
+## boroughBROOKLYN                                                                      0.000
+## boroughMANHATTAN                                                                     0.000
+## boroughQUEENS                                                                        0.003
+## boroughSTATEN ISLAND                                                                 0.002
+## vehicle_type_code_14 dr sedan                                                        0.000
+## vehicle_type_code_1AMBU                                                              0.000
+## vehicle_type_code_1Ambul                                                             0.000
+## vehicle_type_code_1Ambulance                                                         0.000
+## vehicle_type_code_1AMBULANCE                                                         0.000
+## vehicle_type_code_1Beverage Truck                                                    0.000
+## vehicle_type_code_1BICYCLE                                                           0.000
+## vehicle_type_code_1Bike                                                              0.000
+## vehicle_type_code_1Box T                                                             0.000
+## vehicle_type_code_1Box Truck                                                         0.000
+## vehicle_type_code_1Bulk Agriculture                                                  0.000
+## vehicle_type_code_1Bus                                                               0.000
+## vehicle_type_code_1BUS                                                               0.000
+## vehicle_type_code_1Carry All                                                         0.000
+## vehicle_type_code_1Chassis Cab                                                       0.001
+## vehicle_type_code_1COM                                                               0.000
+## vehicle_type_code_1Convertible                                                       0.000
+## vehicle_type_code_1COURIER                                                           0.000
+## vehicle_type_code_1Dump                                                              0.000
+## vehicle_type_code_1E-Bike                                                            0.000
+## vehicle_type_code_1E-Scooter                                                         0.000
+## vehicle_type_code_1fire                                                              0.000
+## vehicle_type_code_1Fire                                                              0.000
+## vehicle_type_code_1Fire truck                                                        0.000
+## vehicle_type_code_1Fire Truck                                                        0.000
+## vehicle_type_code_1FIRE TRUCK                                                        0.000
+## vehicle_type_code_1Flat Bed                                                          0.000
+## vehicle_type_code_1Flat Rack                                                         0.000
+## vehicle_type_code_1Garbage or Refuse                                                 0.000
+## vehicle_type_code_1GARBAGE TR                                                        0.000
+## vehicle_type_code_1Golf Cart                                                         0.000
+## vehicle_type_code_1LARGE COM VEH(6 OR MORE TIRES)                                    0.000
+## vehicle_type_code_1LIVERY VEHICLE                                                    0.000
+## vehicle_type_code_1Moped                                                             0.000
+## vehicle_type_code_1Motorbike                                                         0.000
+## vehicle_type_code_1Motorcycle                                                        0.000
+## vehicle_type_code_1MOTORCYCLE                                                        0.000
+## vehicle_type_code_1Motorscooter                                                      0.000
+## vehicle_type_code_1Multi-Wheeled Vehicle                                             0.000
+## vehicle_type_code_1Open Body                                                         0.000
+## vehicle_type_code_1OTHER                                                             0.000
+## vehicle_type_code_1Pallet                                                            0.000
+## vehicle_type_code_1PAS                                                               0.000
+## vehicle_type_code_1PASSENGER VEHICLE                                                 0.000
+## vehicle_type_code_1Pedicab                                                           0.000
+## vehicle_type_code_1Pick-up Truck                                                     0.000
+## vehicle_type_code_1PICK-UP TRUCK                                                     0.000
+## vehicle_type_code_1Pickup                                                            0.000
+## vehicle_type_code_1PK                                                                0.000
+## vehicle_type_code_1Sedan                                                             0.000
+## vehicle_type_code_1SMALL COM VEH(4 TIRES)                                            0.000
+## vehicle_type_code_1SPORT UTILITY / STATION WAGON                                     0.000
+## vehicle_type_code_1Standing S                                                        0.000
+## vehicle_type_code_1Station Wagon/Sport Utility Vehicle                               0.000
+## vehicle_type_code_1Taxi                                                              0.000
+## vehicle_type_code_1TAXI                                                              0.000
+## vehicle_type_code_1Tow Truck / Wrecker                                               0.000
+## vehicle_type_code_1Tractor Truck Diesel                                              0.000
+## vehicle_type_code_1Tractor Truck Gasoline                                            0.000
+## vehicle_type_code_1TRAIL                                                             0.000
+## vehicle_type_code_1TRUCK                                                             0.000
+## vehicle_type_code_1UNKNOWN                                                           0.000
+## vehicle_type_code_1van                                                               0.000
+## vehicle_type_code_1Van                                                               0.000
+## vehicle_type_code_1VAN                                                               0.000
+## contributing_factor_vehicle_1Aggressive Driving/Road Rage                            0.000
+## contributing_factor_vehicle_1Alcohol Involvement                                     0.000
+## contributing_factor_vehicle_1Animals Action                                          0.000
+## contributing_factor_vehicle_1Backing Unsafely                                        0.000
+## contributing_factor_vehicle_1Brakes Defective                                        0.000
+## contributing_factor_vehicle_1Cell Phone (hand-held)                                  0.000
+## contributing_factor_vehicle_1Cell Phone (hand-Held)                                  0.000
+## contributing_factor_vehicle_1Driver Inattention/Distraction                          0.000
+## contributing_factor_vehicle_1Driver Inexperience                                     0.000
+## contributing_factor_vehicle_1Driverless/Runaway Vehicle                              0.000
+## contributing_factor_vehicle_1Drugs (illegal)                                         0.000
+## contributing_factor_vehicle_1Drugs (Illegal)                                         0.000
+## contributing_factor_vehicle_1Failure to Keep Right                                   0.000
+## contributing_factor_vehicle_1Failure to Yield Right-of-Way                           0.000
+## contributing_factor_vehicle_1Fatigued/Drowsy                                         0.000
+## contributing_factor_vehicle_1Fell Asleep                                             0.000
+## contributing_factor_vehicle_1Following Too Closely                                   0.000
+## contributing_factor_vehicle_1Glare                                                   0.000
+## contributing_factor_vehicle_1Illnes                                                  0.000
+## contributing_factor_vehicle_1Illness                                                 0.000
+## contributing_factor_vehicle_1Lane Marking Improper/Inadequate                        0.000
+## contributing_factor_vehicle_1Lost Consciousness                                      0.000
+## contributing_factor_vehicle_1Obstruction/Debris                                      0.000
+## contributing_factor_vehicle_1Other Electronic Device                                 0.000
+## contributing_factor_vehicle_1Other Vehicular                                         0.000
+## contributing_factor_vehicle_1Outside Car Distraction                                 0.000
+## contributing_factor_vehicle_1Oversized Vehicle                                       0.000
+## contributing_factor_vehicle_1Passenger Distraction                                   0.000
+## contributing_factor_vehicle_1Passing or Lane Usage Improper                          0.000
+## contributing_factor_vehicle_1Passing Too Closely                                     0.000
+## contributing_factor_vehicle_1Pavement Defective                                      0.000
+## contributing_factor_vehicle_1Pavement Slippery                                       0.000
+## contributing_factor_vehicle_1Pedestrian/Bicyclist/Other Pedestrian Error/Confusion   0.000
+## contributing_factor_vehicle_1Physical Disability                                     0.000
+## contributing_factor_vehicle_1Prescription Medication                                 0.000
+## contributing_factor_vehicle_1Reaction to Other Uninvolved Vehicle                    0.000
+## contributing_factor_vehicle_1Reaction to Uninvolved Vehicle                          0.000
+## contributing_factor_vehicle_1Steering Failure                                        0.000
+## contributing_factor_vehicle_1Tire Failure/Inadequate                                 0.000
+## contributing_factor_vehicle_1Traffic Control Device Improper/Non-Working             0.000
+## contributing_factor_vehicle_1Traffic Control Disregarded                             0.000
+## contributing_factor_vehicle_1Turning Improperly                                      0.000
+## contributing_factor_vehicle_1Unsafe Lane Changing                                    0.000
+## contributing_factor_vehicle_1Unsafe Speed                                            0.000
+## contributing_factor_vehicle_1Unspecified                                             0.000
+## contributing_factor_vehicle_1View Obstructed/Limited                                 0.000
+## contributing_factor_vehicle_1Windshield Inadequate                                   0.000
+##                                                                                    Pr(&gt;|z|)
+## (Intercept)                                                                           1.000
+## boroughBROOKLYN                                                                       1.000
+## boroughMANHATTAN                                                                      1.000
+## boroughQUEENS                                                                         0.998
+## boroughSTATEN ISLAND                                                                  0.998
+## vehicle_type_code_14 dr sedan                                                         1.000
+## vehicle_type_code_1AMBU                                                               1.000
+## vehicle_type_code_1Ambul                                                              1.000
+## vehicle_type_code_1Ambulance                                                          1.000
+## vehicle_type_code_1AMBULANCE                                                          1.000
+## vehicle_type_code_1Beverage Truck                                                     1.000
+## vehicle_type_code_1BICYCLE                                                            1.000
+## vehicle_type_code_1Bike                                                               1.000
+## vehicle_type_code_1Box T                                                              1.000
+## vehicle_type_code_1Box Truck                                                          1.000
+## vehicle_type_code_1Bulk Agriculture                                                   1.000
+## vehicle_type_code_1Bus                                                                1.000
+## vehicle_type_code_1BUS                                                                1.000
+## vehicle_type_code_1Carry All                                                          1.000
+## vehicle_type_code_1Chassis Cab                                                        1.000
+## vehicle_type_code_1COM                                                                1.000
+## vehicle_type_code_1Convertible                                                        1.000
+## vehicle_type_code_1COURIER                                                            1.000
+## vehicle_type_code_1Dump                                                               1.000
+## vehicle_type_code_1E-Bike                                                             1.000
+## vehicle_type_code_1E-Scooter                                                          1.000
+## vehicle_type_code_1fire                                                               1.000
+## vehicle_type_code_1Fire                                                               1.000
+## vehicle_type_code_1Fire truck                                                         1.000
+## vehicle_type_code_1Fire Truck                                                         1.000
+## vehicle_type_code_1FIRE TRUCK                                                         1.000
+## vehicle_type_code_1Flat Bed                                                           1.000
+## vehicle_type_code_1Flat Rack                                                          1.000
+## vehicle_type_code_1Garbage or Refuse                                                  1.000
+## vehicle_type_code_1GARBAGE TR                                                         1.000
+## vehicle_type_code_1Golf Cart                                                          1.000
+## vehicle_type_code_1LARGE COM VEH(6 OR MORE TIRES)                                     1.000
+## vehicle_type_code_1LIVERY VEHICLE                                                     1.000
+## vehicle_type_code_1Moped                                                              1.000
+## vehicle_type_code_1Motorbike                                                          1.000
+## vehicle_type_code_1Motorcycle                                                         1.000
+## vehicle_type_code_1MOTORCYCLE                                                         1.000
+## vehicle_type_code_1Motorscooter                                                       1.000
+## vehicle_type_code_1Multi-Wheeled Vehicle                                              1.000
+## vehicle_type_code_1Open Body                                                          1.000
+## vehicle_type_code_1OTHER                                                              1.000
+## vehicle_type_code_1Pallet                                                             1.000
+## vehicle_type_code_1PAS                                                                1.000
+## vehicle_type_code_1PASSENGER VEHICLE                                                  1.000
+## vehicle_type_code_1Pedicab                                                            1.000
+## vehicle_type_code_1Pick-up Truck                                                      1.000
+## vehicle_type_code_1PICK-UP TRUCK                                                      1.000
+## vehicle_type_code_1Pickup                                                             1.000
+## vehicle_type_code_1PK                                                                 1.000
+## vehicle_type_code_1Sedan                                                              1.000
+## vehicle_type_code_1SMALL COM VEH(4 TIRES)                                             1.000
+## vehicle_type_code_1SPORT UTILITY / STATION WAGON                                      1.000
+## vehicle_type_code_1Standing S                                                         1.000
+## vehicle_type_code_1Station Wagon/Sport Utility Vehicle                                1.000
+## vehicle_type_code_1Taxi                                                               1.000
+## vehicle_type_code_1TAXI                                                               1.000
+## vehicle_type_code_1Tow Truck / Wrecker                                                1.000
+## vehicle_type_code_1Tractor Truck Diesel                                               1.000
+## vehicle_type_code_1Tractor Truck Gasoline                                             1.000
+## vehicle_type_code_1TRAIL                                                              1.000
+## vehicle_type_code_1TRUCK                                                              1.000
+## vehicle_type_code_1UNKNOWN                                                            1.000
+## vehicle_type_code_1van                                                                1.000
+## vehicle_type_code_1Van                                                                1.000
+## vehicle_type_code_1VAN                                                                1.000
+## contributing_factor_vehicle_1Aggressive Driving/Road Rage                             1.000
+## contributing_factor_vehicle_1Alcohol Involvement                                      1.000
+## contributing_factor_vehicle_1Animals Action                                           1.000
+## contributing_factor_vehicle_1Backing Unsafely                                         1.000
+## contributing_factor_vehicle_1Brakes Defective                                         1.000
+## contributing_factor_vehicle_1Cell Phone (hand-held)                                   1.000
+## contributing_factor_vehicle_1Cell Phone (hand-Held)                                   1.000
+## contributing_factor_vehicle_1Driver Inattention/Distraction                           1.000
+## contributing_factor_vehicle_1Driver Inexperience                                      1.000
+## contributing_factor_vehicle_1Driverless/Runaway Vehicle                               1.000
+## contributing_factor_vehicle_1Drugs (illegal)                                          1.000
+## contributing_factor_vehicle_1Drugs (Illegal)                                          1.000
+## contributing_factor_vehicle_1Failure to Keep Right                                    1.000
+## contributing_factor_vehicle_1Failure to Yield Right-of-Way                            1.000
+## contributing_factor_vehicle_1Fatigued/Drowsy                                          1.000
+## contributing_factor_vehicle_1Fell Asleep                                              1.000
+## contributing_factor_vehicle_1Following Too Closely                                    1.000
+## contributing_factor_vehicle_1Glare                                                    1.000
+## contributing_factor_vehicle_1Illnes                                                   1.000
+## contributing_factor_vehicle_1Illness                                                  1.000
+## contributing_factor_vehicle_1Lane Marking Improper/Inadequate                         1.000
+## contributing_factor_vehicle_1Lost Consciousness                                       1.000
+## contributing_factor_vehicle_1Obstruction/Debris                                       1.000
+## contributing_factor_vehicle_1Other Electronic Device                                  1.000
+## contributing_factor_vehicle_1Other Vehicular                                          1.000
+## contributing_factor_vehicle_1Outside Car Distraction                                  1.000
+## contributing_factor_vehicle_1Oversized Vehicle                                        1.000
+## contributing_factor_vehicle_1Passenger Distraction                                    1.000
+## contributing_factor_vehicle_1Passing or Lane Usage Improper                           1.000
+## contributing_factor_vehicle_1Passing Too Closely                                      1.000
+## contributing_factor_vehicle_1Pavement Defective                                       1.000
+## contributing_factor_vehicle_1Pavement Slippery                                        1.000
+## contributing_factor_vehicle_1Pedestrian/Bicyclist/Other Pedestrian Error/Confusion    1.000
+## contributing_factor_vehicle_1Physical Disability                                      1.000
+## contributing_factor_vehicle_1Prescription Medication                                  1.000
+## contributing_factor_vehicle_1Reaction to Other Uninvolved Vehicle                     1.000
+## contributing_factor_vehicle_1Reaction to Uninvolved Vehicle                           1.000
+## contributing_factor_vehicle_1Steering Failure                                         1.000
+## contributing_factor_vehicle_1Tire Failure/Inadequate                                  1.000
+## contributing_factor_vehicle_1Traffic Control Device Improper/Non-Working              1.000
+## contributing_factor_vehicle_1Traffic Control Disregarded                              1.000
+## contributing_factor_vehicle_1Turning Improperly                                       1.000
+## contributing_factor_vehicle_1Unsafe Lane Changing                                     1.000
+## contributing_factor_vehicle_1Unsafe Speed                                             1.000
+## contributing_factor_vehicle_1Unspecified                                              1.000
+## contributing_factor_vehicle_1View Obstructed/Limited                                  1.000
+## contributing_factor_vehicle_1Windshield Inadequate                                    1.000
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4.8807e+01  on 3764  degrees of freedom
+## Residual deviance: 1.5738e-07  on 3648  degrees of freedom
+##   (1235 observations deleted due to missingness)
+## AIC: 234
+## 
+## Number of Fisher Scoring iterations: 25</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>logit_or <span class="ot">&lt;-</span> <span class="fu">tidy</span>(logit_mod, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>logit_or <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">!=</span> <span class="st">&quot;(Intercept)&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(term, estimate), <span class="at">y =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Logistic Model: Odds Ratios for Fatal Collision&quot;</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Predictor&quot;</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Odds Ratio (95% CI)&quot;</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="modeling_files/figure-html/logistic%20regression-1.png" width="672" /></p>
+</div>
+<div id="residual-diagnostics" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Residual Diagnostics<a
+href="#residual-diagnostics" class="anchor-section"
+aria-label="Anchor link to header"></a></h1>
+<div id="linear-model" class="section level3 hasAnchor">
+<h3 class="hasAnchor">Linear Model<a href="#linear-model"
+class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>mvc_model <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">add_residuals</span>(lm_mod, <span class="at">var =</span> <span class="st">&quot;resid&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="fu">add_predictions</span>(lm_mod, <span class="at">var =</span> <span class="st">&quot;pred&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> resid)) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Linear Model: Residuals vs Fitted&quot;</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Fitted Values&quot;</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="modeling_files/figure-html/lm-resid-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="poisson-model" class="section level3 hasAnchor">
+<h3 class="hasAnchor">Poisson Model<a href="#poisson-model"
+class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>mvc_model <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">add_residuals</span>(pois_mod, <span class="at">var =</span> <span class="st">&quot;resid&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">add_predictions</span>(pois_mod, <span class="at">var =</span> <span class="st">&quot;pred&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> resid)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#2C93E8&quot;</span>) <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Poisson Model Residuals vs Fitted&quot;</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Fitted Values&quot;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="modeling_files/figure-html/poisson-resid-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="summary-of-findings" class="section level1 hasAnchor">
+<h1 class="hasAnchor">Summary of Findings<a href="#summary-of-findings"
+class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li>Geography strongly influences injury severity<br />
+</li>
+<li>Time of day significantly impacts injury risk<br />
+</li>
+<li>Fatal collisions correspond to far higher injury counts<br />
+</li>
+<li>Poisson regression is better suited for this outcome than linear
+regression</li>
+</ul>
+<p>Extensions could include negative binomial regression, zero-inflated
+models, and interaction terms.</p>
+</div>
 
 
 
