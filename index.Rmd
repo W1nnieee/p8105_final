@@ -26,6 +26,9 @@ Using data from NYC Open Data, this project explores:
 
 This website presents descriptive analyses, spatial mapping, and statistical modeling results to better understand collision patterns and risk factors across the five boroughs.
 
+![](images/traffic.jpeg)
+
+
 ---
 
 ## Data Source
