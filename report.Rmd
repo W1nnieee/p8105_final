@@ -18,3 +18,12 @@ Through this project, we aimed to combine our growing data science skills with a
 In particular, we were interested in how variables such as time of day, borough differences, and vehicle type may influence collision outcomes. These aspects are often discussed anecdotally—“nighttime is dangerous,” “Brooklyn has the worst traffic,” “rainy weather leads to more accidents”—but they rarely receive thorough, data-driven examination. Our motivation was to create a clear, visual, and analytical exploration of these patterns in order to turn widely held assumptions into evidence-based insights.
 
 Ultimately, this project allowed us to apply R’s data manipulation, mapping, and modeling tools to investigate a real problem with real stakes. By analyzing NYC’s collision trends, we hope to contribute not only to our technical learning but also to broader conversations about how to make urban environments safer for everyone.
+
+# Goals & Research Questions
+Understanding the patterns and determinants of motor vehicle collisions is essential for improving transportation safety in New York City. The overarching goal of this project is to translate NYC’s collision data into meaningful evidence that can support safer urban mobility. We seek to uncover when and where collisions are most likely to occur, how severe these incidents typically are, and which factors contribute most strongly to serious outcomes such as injuries and fatalities. By integrating exploratory visualization, mapping, and statistical modeling, we aim to provide a holistic and data-driven understanding of collision risks across the city.
+To guide our analysis, we focus on the following research questions:
+
+- When do collisions most frequently occur?
+- Where do collisions occur, and which boroughs are most affected?
+- How severe are collisions in New York City?
+- Which factors are associated with injuries or severe outcomes?
