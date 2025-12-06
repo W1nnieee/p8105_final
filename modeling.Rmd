@@ -120,40 +120,53 @@ bind_rows(
 
 ---
 
-# Prediction
+# Death reason
 
-We are interested in whether there's death in collision using logistic regression
+We first calculated the proportion of fatal accidents occurring in different boroughs.
+```{r}
+mvc_death <- mvc_model |>
+  mutate(death = as.integer(number_of_persons_killed > 0))
 
-```{r logistic regression}
-set.seed(123)
-# use a small dataset to do regression
-mvc_logit <- mvc_model |>
-  sample_n(5000)  
+death_by_borough <- mvc_death |>
+  group_by(borough) |>
+  summarise(
+    n          = n(),                       
+    deaths     = sum(death, na.rm = TRUE), 
+    death_rate = mean(death, na.rm = TRUE) 
+  ) |>
+  arrange(desc(death_rate))
 
-logit_mod <- glm(
-  I(number_of_persons_killed > 0) ~ borough + vehicle_type_code_1 + contributing_factor_vehicle_1,
-  data   = mvc_logit,
-  family = binomial()
-)
+death_by_borough
 
-summary(logit_mod)
+```
 
-library(broom)
+```{r}
+death_by_vehicle <- mvc_death |>
+  group_by(vehicle_type_code_1) |>
+  summarise(
+    n          = n(),
+    deaths     = sum(death, na.rm = TRUE),
+    death_rate = mean(death, na.rm = TRUE)
+  ) |>
+  filter(n >= 20) |>
+  arrange(desc(death_rate))
 
-logit_or <- tidy(logit_mod, exponentiate = TRUE, conf.int = TRUE)
+death_by_vehicle
 
-logit_or |>
-  filter(term != "(Intercept)") |>
-  ggplot(aes(x = reorder(term, estimate), y = estimate)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.1) +
-  coord_flip() +
-  labs(
-    title = "Logistic Model: Odds Ratios for Fatal Collision",
-    x = "Predictor",
-    y = "Odds Ratio (95% CI)"
-  ) +
-  theme_minimal(base_size = 14)
+```
+
+```{r}
+death_by_factor <- mvc_death |>
+  group_by(contributing_factor_vehicle_1) |>
+  summarise(
+    n          = n(),
+    deaths     = sum(death, na.rm = TRUE),
+    death_rate = mean(death, na.rm = TRUE)
+  ) |>
+  filter(n >= 20) |>
+  arrange(desc(death_rate))
+
+death_by_factor
 
 ```
 
