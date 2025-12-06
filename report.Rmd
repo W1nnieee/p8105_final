@@ -9,7 +9,18 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE
 )
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(hms)
+library(leaflet)
+library(leaflet.extras)
+library(viridis)
+library(htmltools)
+
+mvc_clean <- read_csv("/Users/winniew/Desktop/final1/mvc_clean.csv", show_col_types = FALSE)
 ```
+
 # Motivation
 Motor vehicle collisions are a major public health and transportation concern in New York City. Every day, hundreds of crashes occur across the five boroughs, affecting pedestrians, cyclists, motorists, and entire communities. Living in a dense and highly mobile urban environment, we constantly witness the consequences of unsafe road conditions, heavy traffic, and the complex interaction between human behavior and the built environment. These experiences motivated us to investigate the patterns and factors underlying NYC collisions more systematically.
 
@@ -27,3 +38,223 @@ To guide our analysis, we focus on the following research questions:
 - Where do collisions occur, and which boroughs are most affected?
 - How severe are collisions in New York City?
 - Which factors are associated with injuries or severe outcomes?
+
+# Data
+The dataset used in this project is the Motor Vehicle Collisions – Crashes dataset available on NYC Open Data. This dataset contains detailed, police-reported information on every recorded motor vehicle collision in New York City, including the crash date and time, borough, geographic coordinates, the number of persons injured or killed, contributing factors, and the types of vehicles involved. The raw file consists of hundreds of thousands of observations with dozens of variables, providing a comprehensive city-wide view of collision events across the five boroughs. For our analysis, we cleaned and standardized the data by converting timestamps, extracting the hour of day, harmonizing categorical variables, and removing rows with missing or invalid entries such as unavailable borough or coordinates. These preprocessing steps produced a structured and consistent dataset suitable for exploring temporal and spatial patterns and for modeling environmental and contextual factors associated with collision severity.
+
+# Exploratory Analysis
+## Spatial Overview
+```{r}
+mvc_clean |>
+  count(borough, name = "n") |>
+  ggplot(aes(x = reorder(borough, n), y = n, fill = borough)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  labs(
+    title = "Total Collisions by Borough",
+    x = "Borough",
+    y = "Number of Collisions"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(legend.position = "none")
+
+```
+
+## How severe are NYC collisions?
+```{r}
+mvc_clean |>
+  mutate(
+    severity = case_when(
+      number_of_persons_killed > 0 ~ "Fatal",
+      number_of_persons_injured > 0 ~ "Injury",
+      TRUE ~ "Property Damage Only"
+    )
+  ) |>
+  count(severity) |>
+  ggplot(aes(x = severity, y = n, fill = severity)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  labs(
+    title = "Collision Severity Distribution",
+    x = NULL,
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(legend.position = "none")
+```
+
+```{r}
+mvc_clean |>
+  mutate(
+    hour = hour(crash_time),
+    severity = case_when(
+      number_of_persons_killed > 0 ~ "Fatal",
+      number_of_persons_injured > 0 ~ "Injury",
+      TRUE ~ "PDO"
+    )
+  ) |>
+  count(hour, severity) |>
+  ggplot(aes(x = hour, y = n, color = severity)) +
+  geom_line(size = 1.1) +
+  scale_color_viridis_d(direction = -1) +
+  scale_x_continuous(breaks = 0:23) +
+  labs(
+    title = "Hourly Pattern of Injuries and Fatalities",
+    x = "Hour",
+    y = "Count",
+    color = "Severity"
+  ) +
+  theme_minimal(base_size = 15)
+
+```
+
+## Temporal Patterns
+```{r}
+mvc_clean |>
+  mutate(hour = hour(crash_time)) |>
+  count(hour) |>
+  ggplot(aes(x = hour, y = n)) +
+  geom_line(color = "#1f78b4", size = 1.2) +
+  geom_point(color = "#084c7f", size = 2) +
+  scale_x_continuous(breaks = 0:23) +
+  labs(
+    title = "Collisions by Hour of Day",
+    x = "Hour",
+    y = "Number of Crashes"
+  ) +
+  theme_minimal(base_size = 15)
+```
+
+```{r}
+mvc_clean |>
+  mutate(weekday = wday(crash_date, label = TRUE)) |>
+  count(weekday) |>
+  ggplot(aes(x = weekday, y = n, fill = weekday)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  labs(
+    title = "Collisions by Day of Week",
+    x = NULL,
+    y = "Number of Collisions"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(legend.position = "none")
+```
+
+```{r}
+mvc_clean |>
+  mutate(
+    hour = hour(crash_time),
+    weekday = wday(crash_date, label = TRUE)
+  ) |>
+  count(weekday, hour) |>
+  ggplot(aes(x = hour, y = weekday, fill = n)) +
+  geom_tile() +
+  scale_fill_viridis(option = "C") +
+  labs(
+    title = "Heatmap of Collisions by Hour and Day of Week",
+    x = "Hour of Day",
+    y = "Day of Week",
+    fill = "Collisions"
+  ) +
+  theme_minimal(base_size = 15)
+```
+
+## Contextual Overview
+```{r}
+mvc_clean |>
+  count(contributing_factor_vehicle_1) |>
+  arrange(desc(n)) |>
+  slice_head(n = 10) |>
+  ggplot(aes(x = reorder(contributing_factor_vehicle_1, n), y = n)) +
+  geom_col(fill = "#1f78b4") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Contributing Factors",
+    x = "Contributing Factor",
+    y = "Count"
+  ) +
+  theme_minimal(base_size = 15)
+
+```
+
+```{r}
+mvc_clean |>
+  count(vehicle_type_code_1) |>
+  arrange(desc(n)) |>
+  slice_head(n = 10) |>
+  ggplot(aes(x = reorder(vehicle_type_code_1, n), y = n)) +
+  geom_col(fill = "#33a02c") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Vehicle Types in Crashes",
+    x = "Vehicle Type",
+    y = "Count"
+  ) +
+  theme_minimal(base_size = 15)
+```
+
+## Additional Analysis
+```{r}
+set.seed(123)
+
+mvc_sample <- mvc_clean |>
+  filter(!is.na(latitude), !is.na(longitude)) |>
+  slice_sample(n = 5000)
+
+leaflet(mvc_sample) |>
+  addProviderTiles(providers$CartoDB.DarkMatter) |>
+  setView(lng = -73.97, lat = 40.75, zoom = 11) |>
+  addHeatmap(
+    lng = ~longitude,
+    lat = ~latitude,
+    blur = 20,
+    max = 0.05,
+    radius = 10
+  )
+```
+
+```{r}
+mvc_sample2 <- mvc_clean |>
+  mutate(
+    severity = case_when(
+      number_of_persons_killed > 0 ~ "Fatal",
+      number_of_persons_injured > 0 ~ "Injury",
+      TRUE ~ "Property Damage Only"
+    )
+  ) |>
+  slice_sample(n = 5000)
+
+pal <- colorFactor(
+  palette = c("#7db7ff", "#2C93E8", "#FF5733"),
+  domain = c("Property Damage Only", "Injury", "Fatal")
+)
+
+leaflet(mvc_sample2) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  setView(lng = -73.97, lat = 40.75, zoom = 11) |>
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.6,
+    color = ~pal(severity),
+    label = ~htmlEscape(severity)
+  ) |>
+  addLegend(
+    position = "bottomright",
+    pal = pal,
+    values = mvc_sample2$severity,
+    title = "Severity"
+  )
+```
+
+
+
+
+
+
+
+
