@@ -24,7 +24,7 @@ navbar:
       href: report.html
   right:
     - icon: fa-github
-      href: "https://github.com/YOURUSER/yourrepo"
+      href: "https://github.com/W1nnieee/p8105_final"
 
 output:
   html_document:
