@@ -24,6 +24,10 @@ library(modelr)
 
 mvc_clean <- read_csv("E:/Desktop/mvc_clean.csv", show_col_types = FALSE)
 ```
+**Collaborators**  
+- Daniel Jiao (dj2764)  - Yuyang Wang (yw4660)
+- Xinyu Wang (xw3106)
+- Haoyi Tan (ht2717)
 
 # Motivation
 Motor vehicle collisions are a major public health and transportation concern in New York City. Every day, hundreds of crashes occur across the five boroughs, affecting pedestrians, cyclists, motorists, and entire communities. Living in a dense and highly mobile urban environment, we constantly witness the consequences of unsafe road conditions, heavy traffic, and the complex interaction between human behavior and the built environment. These experiences motivated us to investigate the patterns and factors underlying NYC collisions more systematically.
@@ -34,6 +38,9 @@ In particular, we were interested in how variables such as time of day, borough 
 
 Ultimately, this project allowed us to apply R’s data manipulation, mapping, and modeling tools to investigate a real problem with real stakes. By analyzing NYC’s collision trends, we hope to contribute not only to our technical learning but also to broader conversations about how to make urban environments safer for everyone.
 
+# Related Work
+Prior analyses of New York City traffic safety—including NYC DOT’s Vision Zero Borough Reports and research articles such as Ding et al. (2020) on urban crash risk—highlight consistent patterns in urban collisions, including peak-hour concentration, spatial clustering near commercial districts, and the strong role of driver inattention. News outlets such as The New York Times have also reported on rising pedestrian injuries in Manhattan and the persistent challenge of distracted driving. These works helped frame our investigation by emphasizing the importance of temporal-spatial patterns and human behavioral factors in explaining collision dynamics. Our project extends these ideas using more recent data, adds mapping and modeling components, and integrates traffic volume to test commonly cited but rarely quantified assumptions about collision risk.
+
 # Goals & Research Questions
 Understanding the patterns and determinants of motor vehicle collisions is essential for improving transportation safety in New York City. The overarching goal of this project is to translate NYC’s collision data into meaningful evidence that can support safer urban mobility. We seek to uncover when and where collisions are most likely to occur, how severe these incidents typically are, and which factors contribute most strongly to serious outcomes such as injuries and fatalities. By integrating exploratory visualization, mapping, and statistical modeling, we aim to provide a holistic and data-driven understanding of collision risks across the city.
 To guide our analysis, we focus on the following research questions:
@@ -43,8 +50,24 @@ To guide our analysis, we focus on the following research questions:
 - How severe are collisions in New York City?
 - Which factors are associated with injuries or severe outcomes?
 
+
+
 # Data
 The primary dataset used in this project is the Motor Vehicle Collisions – Crashes dataset from NYC Open Data, which provides detailed, police-reported information for each crash, including date and time, borough, geographic coordinates, injury and fatality counts, contributing factors, and vehicle types. To provide context on traffic exposure, we also reference the NYC Automated Traffic Volume Counts dataset, which contains hourly vehicle counts collected by Department of Transportation roadway sensors. Together, these datasets allow us to examine collision patterns alongside roadway usage. For analysis, we cleaned and standardized the collision data by converting timestamps, extracting relevant temporal features, harmonizing categorical variables, and removing entries with missing boroughs or invalid coordinates, resulting in a structured dataset suitable for exploring spatial, temporal, and contextual factors related to collision severity.
+
+## Data Cleaning Summary
+We performed several cleaning steps to prepare the dataset for analysis:
+
+Removed entries missing borough or geographic coordinates (representing X% of raw observations).
+
+Standardized date/time formats and extracted features such as hour, weekday, and month.
+
+Collapsed long-tail categories for contributing factors and vehicle types by grouping rare values (<0.5% frequency) into an “Other” category.
+
+Removed records with coordinate errors such as (0, 0) or values outside the NYC bounding box.
+
+Ensured consistency across duplicated entries by retaining the earliest timestamp per report.
+These transformations produced a clean analytical dataset with N observations.
 
 # Exploratory Analysis
 ## Spatial Overview
@@ -269,6 +292,9 @@ leaflet(mvc_sample2) |>
 
 The heatmap reveals distinct collision hotspots in Manhattan—especially Midtown and Lower Manhattan—along with notable concentrations along major corridors in Brooklyn and Queens. In contrast, Staten Island and peripheral areas of the Bronx show relatively sparse collision activity. The point-level severity map reinforces these spatial trends: injury crashes are distributed widely across the city, whereas fatal crashes cluster more prominently along high-speed arterial roads rather than dense urban centers. These patterns suggest that both urban density and roadway design play important roles in shaping the frequency and severity of collisions in New York City.
 
+# Evolution of Research Questions
+As we began our exploratory analysis, our original questions—primarily descriptive—expanded in scope. Initially, we aimed only to characterize when and where collisions occur. However, early findings showing strong temporal variation and borough-level differences motivated additional questions about what factors predict injury severity. This led us to incorporate statistical modeling. Similarly, after observing clear temporal peaks in collision frequency, we added correlation analyses with traffic volume to examine whether exposure alone could explain these temporal patterns. This evolution reflects the iterative nature of data-driven research: exploratory findings guided us toward more targeted and explanatory analyses.
+
 # Modeling
 We model collision severity using count-based injury outcomes. Because the number of persons injured is a non-negative count with many zeros, we compare a traditional linear regression model with a Poisson regression model, and evaluate which specification better fits the structure of the data.
 ```{r include=FALSE}
@@ -346,6 +372,9 @@ mvc_model |>
 
 Residual diagnostic plots reveal clear differences in model adequacy between the linear and Poisson regressions. The linear model shows strong heteroskedasticity, with residuals tightly clustered near zero for low fitted values but spreading widely as fitted values increase, indicating violation of constant variance and non-normal error assumptions. In contrast, the Poisson model exhibits a more stable residual pattern, with residuals remaining centered around zero and displaying variance patterns more consistent with count data. Although some dispersion remains, the Poisson model aligns substantially better with the underlying distribution of injuries, supporting its use as the preferred model for this outcome.
 
+## Modeling Rationale
+Predictors were selected based on domain relevance and findings from exploratory analysis. Hour of day captures temporal exposure differences. Borough controls for spatial variation in population density and roadway structure. The number of persons killed indicates crash severity and is theoretically linked to injury likelihood. We compared linear and Poisson regression because the outcome (injury count) is a non-negative count with excess zeros and right-skewness.
+
 # Correlation
 We also conducted a correlation analysis and found that traffic volume has only a very weak linear association with crash counts in New York City. Citywide, the correlation between hourly traffic volume and collisions is approximately r ≈ 0.10, suggesting that higher-volume periods tend to experience slightly more crashes, but the relationship is minimal and explains very little of the variation in crash frequency. When examining boroughs individually, correlations remain weak across all areas—ranging from essentially no relationship in Staten Island (r ≈ 0.02) to slightly stronger but still weak associations in Queens, the Bronx, and Manhattan (generally r ≈ 0.07–0.16). These findings indicate that traffic volume alone is insufficient to explain spatial or temporal crash patterns, and that other factors—such as road design, intersection characteristics, and driver behavior—likely play a much more substantial role in shaping collision risk.
 
@@ -359,4 +388,10 @@ Third, our examination of collision severity indicates that most crashes involve
 Finally, our modeling work offers insight into which factors are associated with injury outcomes. Both the linear and Poisson models identify hour of day, borough, and the number of persons killed as significant predictors of injury counts. The Poisson model, which provides a superior fit for count data, demonstrates that injuries are more likely during high-traffic periods and in certain boroughs, while Manhattan consistently shows lower injury risk after adjusting for crash characteristics. These patterns reflect how contextual and environmental factors—such as traffic flow, population density, driver behavior, and roadway structure—interact to shape injury severity.
 
 Together, these findings paint a cohesive picture of collision dynamics in New York City: crashes are most common during peak travel times, concentrated in high-density regions, predominantly minor in severity, and influenced by a combination of temporal, spatial, and behavioral factors. By integrating exploratory visualization, spatial mapping, and statistical modeling, this project provides a comprehensive and evidence-based perspective on traffic safety across the city.
+
+# Limitations
+Several limitations should be noted. First, police-reported contributing factors are subject to reporting bias and often coded as “Unspecified,” reducing reliability. Second, our modeling does not include weather, roadway geometry, or traffic signalization data, all of which can strongly influence crash risk. Third, injury counts contain many zeros and may exhibit overdispersion beyond what Poisson models capture. Finally, traffic volume data come from a limited set of roadway sensors and may not fully represent actual citywide exposure.
+
+# Future Work
+Future analyses could incorporate spatial statistical models or geographically weighted regression to better quantify local risk factors. Integrating weather data, intersection characteristics, and speed limit changes would also improve explanatory power. Machine learning approaches such as random forests or gradient boosting could help identify nonlinear interactions among predictors. Finally, linking to hospitalization or EMS records could enable deeper study of injury severity beyond counts.
 
